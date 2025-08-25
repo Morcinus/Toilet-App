@@ -1,0 +1,41 @@
+---
+alwaysApply: true
+---
+
+# Prague Toilet App
+
+## Project Overview
+
+The Prague Toilet App is a playful web app designed as a fun inside joke for a birthday gift. The app allows users to explore, rate, and add toilets in Prague on an interactive map. Each toilet has a card with details, including name, description, image, and a star rating based on likes and dislikes. Users can add new toilets by placing a pin on the map and filling in a simple form. The app is meant to be lighthearted, humorous, and easy to use, with a responsive layout for both desktop and mobile.
+
+## Features
+
+- Interactive map of Prague displaying all toilet locations as individual pins.
+- Click a pin to view a toilet card with:
+  - Toilet name
+  - Description
+  - Image
+  - Like / dislike buttons
+  - Star rating (out of 5, average of likes/dislikes)
+- Add a new toilet:
+  - Click a “+ Add Toilet” button
+  - Pin appears in the center of the map; user can move the map to position it
+  - Click “Place Toilet” to lock pin location
+  - Fill out form with name, description, and upload an image
+  - New toilet appears immediately on the map
+- Likes and dislikes can be applied multiple times
+- Data stored in individual markdown files with YAML frontmatter
+- Responsive design:
+  - Toilet card appears left above the map on desktop
+  - Toilet card appears centered above the map on mobile
+- Designed to be humorous, lighthearted, and easy to use
+
+## Implementation Notes
+
+- The app data is saved on GitHub in the same repository as the code
+- The app is then hosted on Netlify
+- Each user action such as creating a toilet, adding an image or liking a toilet should be created as a commit to the repository
+- Map: Google Maps preferred
+- Each toilet corresponds to a separate markdown file with YAML frontmatter storing name, description, image URL, coordinates, likes, and dislikes
+- UI is responsive and works on desktop and mobile
+- App is a simple sandbox experience; no login or authentication required

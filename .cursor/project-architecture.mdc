@@ -1,0 +1,20 @@
+---
+alwaysApply: true
+---
+
+# Project Architecture Overview
+
+- Project repository is on GitHub
+- Project will be hosted via Netlify
+- Each user action such as creating a toilet, adding an image or liking a toilet should be created as a commit to the repository
+- Project doesnt have any user authentication. The users can create and view any content.
+
+## Technologies
+
+- Project should be programmed using:
+  - React
+  - shadcn/ui
+  - Tailwind
+  - Hugo - for managing content
+  - Google Maps (preferably - if it would be too complicated, you can use other maps)
+- Optionally you can use DecapCMS if it would be helpful with the user actions such as creating the new toilet etc.
