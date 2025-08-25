@@ -8,6 +8,8 @@ description: "Public toilet near Petřín Hill, good for park visitors."
 isFree: false
 rating: 3.5
 totalRatings: 67
+likes: 45
+dislikes: 22
 images: []
 createdAt: "2024-01-01T00:00:00Z"
 updatedAt: "2024-01-01T00:00:00Z"

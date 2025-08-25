@@ -8,6 +8,8 @@ description: "Public toilet in the heart of Wenceslas Square, central location."
 isFree: false
 rating: 3.8
 totalRatings: 127
+likes: 89
+dislikes: 38
 images: []
 createdAt: "2024-01-01T00:00:00Z"
 updatedAt: "2024-01-01T00:00:00Z"

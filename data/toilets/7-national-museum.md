@@ -8,6 +8,8 @@ description: "Clean toilet facilities in the National Museum building."
 isFree: true
 rating: 4.3
 totalRatings: 112
+likes: 87
+dislikes: 25
 images: []
 createdAt: "2024-01-01T00:00:00Z"
 updatedAt: "2024-01-01T00:00:00Z"

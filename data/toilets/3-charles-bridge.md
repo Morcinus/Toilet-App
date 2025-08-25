@@ -8,6 +8,8 @@ description: "Public toilet near the famous Charles Bridge, convenient for touri
 isFree: false
 rating: 3.1
 totalRatings: 203
+likes: 140
+dislikes: 63
 images: []
 createdAt: "2024-01-01T00:00:00Z"
 updatedAt: "2024-01-01T00:00:00Z"

@@ -8,6 +8,8 @@ description: "Toilet facilities within the Prague Castle complex."
 isFree: false
 rating: 4.0
 totalRatings: 94
+likes: 67
+dislikes: 27
 images: []
 createdAt: "2024-01-01T00:00:00Z"
 updatedAt: "2024-01-01T00:00:00Z"

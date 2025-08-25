@@ -8,6 +8,8 @@ description: "Public toilet located in the historic Old Town Square, near the As
 isFree: false
 rating: 4.2
 totalRatings: 156
+likes: 120
+dislikes: 36
 images: []
 createdAt: "2024-01-01T00:00:00Z"
 updatedAt: "2024-01-01T00:00:00Z"

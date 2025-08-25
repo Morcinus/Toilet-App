@@ -8,6 +8,8 @@ description: "Clean and modern toilet facilities in the Palladium shopping cente
 isFree: true
 rating: 4.5
 totalRatings: 89
+likes: 65
+dislikes: 24
 images: []
 createdAt: "2024-01-01T00:00:00Z"
 updatedAt: "2024-01-01T00:00:00Z"

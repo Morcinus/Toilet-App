@@ -8,6 +8,8 @@ description: "Elegant toilet facilities in the Art Nouveau Municipal House."
 isFree: false
 rating: 4.1
 totalRatings: 78
+likes: 58
+dislikes: 20
 images: []
 createdAt: "2024-01-01T00:00:00Z"
 updatedAt: "2024-01-01T00:00:00Z"
