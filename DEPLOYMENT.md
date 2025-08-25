@@ -30,8 +30,9 @@ This guide explains how to deploy the Toilet App to Netlify with GitHub integrat
 3. Choose "GitHub" and authorize Netlify
 4. Select your repository
 5. Configure build settings:
-   - **Build command**: `npm run build`
+   - **Build command**: `npm run build:netlify` (this handles function dependencies)
    - **Publish directory**: `dist`
+   - **Node version**: 18 (automatically detected from .nvmrc)
 6. Click "Deploy site"
 
 #### Option B: Manual Deploy
@@ -122,9 +123,15 @@ The app uses Netlify serverless functions to:
    - Repository must be accessible to the token
 
 4. **Build failures**
-   - Check build command in Netlify
+
+   - Check build command in Netlify (should be `npm run build:netlify`)
    - Verify all dependencies are in package.json
    - Check build logs for specific errors
+
+5. **"axios dependency not installed" error**
+   - This is now resolved with the `build:netlify` script
+   - The script automatically installs function dependencies
+   - Ensure you're using `npm run build:netlify` as the build command
 
 ### Debug Mode
 
