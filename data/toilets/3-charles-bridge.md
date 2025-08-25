@@ -1,0 +1,47 @@
+---
+id: "3"
+name: "Charles Bridge Toilet"
+address: "Karlův most, 110 00 Praha 1"
+latitude: 50.0865
+longitude: 14.4114
+description: "Public toilet near the famous Charles Bridge, convenient for tourists."
+isFree: false
+rating: 3.1
+totalRatings: 203
+images: []
+createdAt: "2024-01-01T00:00:00Z"
+updatedAt: "2024-01-01T00:00:00Z"
+---
+
+# Charles Bridge Toilet
+
+Public toilet facility conveniently located near the iconic Charles Bridge, serving the many tourists who visit this historic landmark.
+
+## Location
+
+- **Address**: Karlův most, 110 00 Praha 1
+- **Coordinates**: 50.0865°N, 14.4114°E
+- **Nearby**: Charles Bridge, Lesser Town, Old Town
+- **Access**: Near the Old Town side of the bridge
+
+## Details
+
+- **Cost**: Paid (requires coins)
+- **Rating**: ⭐ 3.1/5 (203 ratings)
+- **Type**: Public facility
+- **Best for**: Tourists visiting Charles Bridge
+
+## Features
+
+- Convenient location for bridge visitors
+- Basic facilities
+- Tourist-friendly location
+- Multiple stalls available
+
+## Tips
+
+- Bring coins for payment
+- Can be very busy during peak tourist season
+- Basic but functional facilities
+- Good location when exploring the bridge area
+- Consider timing your visit to avoid crowds

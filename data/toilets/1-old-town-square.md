@@ -1,0 +1,38 @@
+---
+id: "1"
+name: "Public Toilet - Old Town Square"
+address: "Staroměstské náměstí, 110 00 Praha 1"
+latitude: 50.0875
+longitude: 14.4213
+description: "Public toilet located in the historic Old Town Square, near the Astronomical Clock."
+isFree: false
+rating: 4.2
+totalRatings: 156
+images: []
+createdAt: "2024-01-01T00:00:00Z"
+updatedAt: "2024-01-01T00:00:00Z"
+---
+
+# Public Toilet - Old Town Square
+
+Located in the heart of Prague's historic Old Town Square, this public toilet facility serves both tourists and locals visiting one of the city's most iconic locations.
+
+## Location
+
+- **Address**: Staroměstské náměstí, 110 00 Praha 1
+- **Coordinates**: 50.0875°N, 14.4213°E
+- **Nearby**: Astronomical Clock, Old Town Hall, Church of Our Lady before Týn
+
+## Details
+
+- **Cost**: Paid (requires coins)
+- **Rating**: ⭐ 4.2/5 (156 ratings)
+- **Type**: Public facility
+- **Best for**: Tourists visiting Old Town Square
+
+## Tips
+
+- Bring coins for payment
+- Can be busy during peak tourist hours
+- Located near major attractions
+- Clean and well-maintained facility

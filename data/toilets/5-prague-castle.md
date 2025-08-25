@@ -1,0 +1,47 @@
+---
+id: "5"
+name: "Prague Castle Toilet"
+address: "Hradčany, 119 08 Praha 1"
+latitude: 50.09
+longitude: 14.399
+description: "Toilet facilities within the Prague Castle complex."
+isFree: false
+rating: 4.0
+totalRatings: 94
+images: []
+createdAt: "2024-01-01T00:00:00Z"
+updatedAt: "2024-01-01T00:00:00Z"
+---
+
+# Prague Castle Toilet
+
+Toilet facilities located within the historic Prague Castle complex, serving visitors to this UNESCO World Heritage site.
+
+## Location
+
+- **Address**: Hradčany, 119 08 Praha 1
+- **Coordinates**: 50.09°N, 14.399°E
+- **Nearby**: Prague Castle, St. Vitus Cathedral, Golden Lane
+- **Access**: Within the castle complex
+
+## Details
+
+- **Cost**: Paid (castle admission may be required)
+- **Rating**: ⭐ 4.0/5 (94 ratings)
+- **Type**: Castle facility
+- **Best for**: Castle visitors, tourists
+
+## Features
+
+- Clean, well-maintained facilities
+- Located within castle grounds
+- Multiple stalls available
+- Tourist-friendly
+
+## Tips
+
+- May require castle admission ticket
+- Can be busy during peak tourist hours
+- Good location when exploring the castle
+- Consider visiting early in the day
+- Facilities are clean and well-stocked
