@@ -8,6 +8,8 @@ export interface Toilet {
   isFree: boolean;
   rating: number;
   totalRatings: number;
+  likes: number;
+  dislikes: number;
   images: string[];
   createdAt: string;
   updatedAt: string;

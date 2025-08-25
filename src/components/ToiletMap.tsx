@@ -8,6 +8,8 @@ import { Star, Euro } from "lucide-react";
 interface ToiletMapProps {
   toilets: Toilet[];
   onToiletSelect?: (toilet: Toilet) => void;
+  onLike?: (toiletId: string) => void;
+  onDislike?: (toiletId: string) => void;
 }
 
 // Custom marker icon
@@ -36,6 +38,8 @@ const getToiletIcon = (toilet: Toilet) => {
 export const ToiletMap: React.FC<ToiletMapProps> = ({
   toilets,
   onToiletSelect,
+  onLike,
+  onDislike,
 }) => {
   const [selectedToilet, setSelectedToilet] = useState<Toilet | null>(null);
   const [showToiletCard, setShowToiletCard] = useState(false);
@@ -116,7 +120,12 @@ export const ToiletMap: React.FC<ToiletMapProps> = ({
       {/* Toilet Card Overlay */}
       {showToiletCard && selectedToilet && (
         <div className="absolute top-4 left-4 md:left-4 left-1/2 transform -translate-x-1/2 md:transform-none z-10 max-w-sm">
-          <ToiletCard toilet={selectedToilet} onClose={handleCloseCard} />
+          <ToiletCard
+            toilet={selectedToilet}
+            onClose={handleCloseCard}
+            onLike={onLike}
+            onDislike={onDislike}
+          />
         </div>
       )}
     </div>
