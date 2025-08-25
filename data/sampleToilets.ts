@@ -1,4 +1,4 @@
-import { Toilet } from "@/types/toilet";
+import { Toilet } from "../src/types/toilet";
 
 export const sampleToilets: Toilet[] = [
   {
@@ -12,7 +12,10 @@ export const sampleToilets: Toilet[] = [
     isFree: false,
     rating: 4.2,
     totalRatings: 156,
-    images: [],
+    images: [
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop&crop=entropy",
+    ],
     createdAt: "2024-01-01T00:00:00Z",
     updatedAt: "2024-01-01T00:00:00Z",
   },
@@ -27,7 +30,9 @@ export const sampleToilets: Toilet[] = [
     isFree: true,
     rating: 4.5,
     totalRatings: 89,
-    images: [],
+    images: [
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+    ],
     createdAt: "2024-01-01T00:00:00Z",
     updatedAt: "2024-01-01T00:00:00Z",
   },
@@ -71,7 +76,9 @@ export const sampleToilets: Toilet[] = [
     isFree: false,
     rating: 4.0,
     totalRatings: 94,
-    images: [],
+    images: [
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+    ],
     createdAt: "2024-01-01T00:00:00Z",
     updatedAt: "2024-01-01T00:00:00Z",
   },
@@ -99,7 +106,9 @@ export const sampleToilets: Toilet[] = [
     isFree: true,
     rating: 4.3,
     totalRatings: 112,
-    images: [],
+    images: [
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
+    ],
     createdAt: "2024-01-01T00:00:00Z",
     updatedAt: "2024-01-01T00:00:00Z",
   },
