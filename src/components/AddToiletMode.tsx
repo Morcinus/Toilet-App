@@ -1,12 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { MapPin, X, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// import { Toilet } from "@/types/toilet";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import { LatLng, divIcon } from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 interface AddToiletModeProps {
   onCancel: () => void;
   onToiletPlaced: (coordinates: { lat: number; lng: number }) => void;
 }
+
+// Map click handler component
+const MapClickHandler: React.FC<{
+  onMapClick: (latlng: LatLng) => void;
+}> = ({ onMapClick }) => {
+  useMapEvents({
+    click: (e) => {
+      onMapClick(e.latlng);
+    },
+  });
+  return null;
+};
 
 export const AddToiletMode: React.FC<AddToiletModeProps> = ({
   onCancel,
@@ -18,12 +32,14 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
     lng: number;
   } | null>(null);
 
-  // Listen for map center changes (this would need to be connected to the actual map)
+  // Set initial placement pin at map center
   useEffect(() => {
-    // For now, we'll use a default center
-    // In a real implementation, this would listen to map events
     setPlacementPin(mapCenter);
   }, [mapCenter]);
+
+  const handleMapClick = (latlng: LatLng) => {
+    setPlacementPin({ lat: latlng.lat, lng: latlng.lng });
+  };
 
   const handlePlaceToilet = () => {
     if (placementPin) {
@@ -65,25 +81,38 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
 
       {/* Map Area */}
       <div className="flex-1 relative">
-        {/* This would be the actual map component */}
-        <div
-          className="w-full h-full bg-gray-100 flex items-center justify-center cursor-crosshair"
-          onClick={(e) => {
-            // Simple demo: place pin at click location
-            const rect = e.currentTarget.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            // Convert to approximate coordinates (demo purposes)
-            const lat = 50.0755 + (y - rect.height / 2) * 0.0001;
-            const lng = 14.4378 + (x - rect.width / 2) * 0.0001;
-
-            setPlacementPin({ lat, lng });
-          }}
+        <MapContainer
+          center={[mapCenter.lat, mapCenter.lng]}
+          zoom={13}
+          className="w-full h-full"
+          style={{ height: "100%" }}
         >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+
+          {/* Placement pin marker */}
+          {placementPin && (
+            <Marker
+              position={[placementPin.lat, placementPin.lng]}
+              icon={divIcon({
+                className: "custom-div-icon",
+                html: `<div style="background-color: #10b981; width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10],
+              })}
+            />
+          )}
+
+          <MapClickHandler onMapClick={handleMapClick} />
+        </MapContainer>
+
+        {/* Overlay with instructions and button */}
+        <div className="absolute bottom-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4">
           <div className="text-center">
             <p className="text-gray-600 mb-4">
-              Click anywhere on this area to place toilet pin
+              Click anywhere on the map to place toilet pin
             </p>
             {placementPin && (
               <div className="bg-green-100 border border-green-300 rounded-lg p-4 mb-4">

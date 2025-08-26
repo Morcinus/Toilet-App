@@ -74,36 +74,56 @@ function App() {
   };
 
   const handleToiletFormSubmit = async (formData: ToiletFormData) => {
-    // Generate a new ID (simple increment for now)
-    const newId = String(toilets.length + 1);
+    try {
+      // Get image data if available
+      const imageData = formData.imageData || undefined;
 
-    // Create the new toilet object
-    const newToilet: Toilet = {
-      id: newId,
-      name: formData.name,
-      address: formData.address,
-      latitude: formData.latitude,
-      longitude: formData.longitude,
-      description: formData.description,
-      isFree: formData.isFree,
-      rating: 0,
-      totalRatings: 0,
-      likes: 0,
-      dislikes: 0,
-      images: [], // TODO: Handle image upload
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+      // Add toilet via GitHub service
+      const result = await githubService.addToilet({
+        name: formData.name,
+        address: formData.address,
+        latitude: formData.latitude,
+        longitude: formData.longitude,
+        description: formData.description,
+        isFree: formData.isFree,
+        imageData,
+      });
 
-    // Add to local state
-    setToilets((prev) => [...prev, newToilet]);
+      if (result.success && result.toilet) {
+        // Create the new toilet object with the returned data
+        const newToilet: Toilet = {
+          id: result.toilet.id,
+          name: result.toilet.name,
+          address: result.toilet.address,
+          latitude: result.toilet.latitude,
+          longitude: result.toilet.longitude,
+          description: result.toilet.description,
+          isFree: result.toilet.isFree,
+          rating: 0,
+          totalRatings: 0,
+          likes: 0,
+          dislikes: 0,
+          images: result.toilet.imageUrl ? [result.toilet.imageUrl] : [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
 
-    // Reset form state
-    setShowAddToiletForm(false);
-    setPlacementCoordinates(null);
+        // Add to local state
+        setToilets((prev) => [...prev, newToilet]);
 
-    // TODO: Persist to GitHub via Netlify function
-    console.log("New toilet added:", newToilet);
+        // Reset form state
+        setShowAddToiletForm(false);
+        setPlacementCoordinates(null);
+
+        console.log("New toilet added successfully:", newToilet);
+      } else {
+        console.error("Failed to add toilet:", result.error);
+        // TODO: Show error message to user
+      }
+    } catch (error) {
+      console.error("Error adding toilet:", error);
+      // TODO: Show error message to user
+    }
   };
 
   // GitHub config UI disabled when using server env vars

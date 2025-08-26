@@ -22,6 +22,7 @@ export interface ToiletFormData {
   longitude: number;
   description: string;
   isFree: boolean;
+  imageData?: string;
 }
 
 export interface MapBounds {

@@ -3,7 +3,7 @@ import { MapPin, X, Upload, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from "./ui/textarea";
 import { ToiletFormData } from "@/types/toilet";
 
 interface AddToiletFormProps {
@@ -40,7 +40,7 @@ export const AddToiletForm: React.FC<AddToiletFormProps> = ({
     if (file) {
       // setImageFile(file);
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = (e: ProgressEvent<FileReader>) => {
         setImagePreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
@@ -50,7 +50,12 @@ export const AddToiletForm: React.FC<AddToiletFormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.name.trim() && formData.address.trim()) {
-      onSubmit(formData);
+      // Include image data if available
+      const formDataWithImage = {
+        ...formData,
+        imageData: imagePreview || undefined,
+      };
+      onSubmit(formDataWithImage);
     }
   };
 
