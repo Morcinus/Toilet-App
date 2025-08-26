@@ -89,8 +89,12 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
   };
 
   const handlePlaceToilet = () => {
+    console.log("Place Toilet button clicked!");
     if (placementPin) {
+      console.log("Proceeding with placement at:", placementPin);
       onToiletPlaced(placementPin);
+    } else {
+      console.log("No placement pin set");
     }
   };
 
@@ -175,7 +179,7 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
         )}
 
         {/* Overlay with instructions and button */}
-        <div className="absolute bottom-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4">
+        <div className="absolute bottom-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-20 border-2 border-blue-200">
           <div className="text-center">
             <p className="text-gray-600 mb-4">
               Click anywhere on the map to place toilet pin
@@ -194,11 +198,27 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
             <Button
               onClick={handlePlaceToilet}
               disabled={!placementPin}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-2"
+              style={{
+                minHeight: "44px",
+                fontSize: "16px",
+                boxShadow:
+                  "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+              }}
             >
-              <Check className="w-4 h-4 mr-2" />
+              <Check className="w-5 h-5 mr-2" />
               Place Toilet
             </Button>
+
+            {/* Debug info */}
+            <div className="text-xs text-gray-500 mt-2">
+              Button state: {placementPin ? "Enabled" : "Disabled"} | Pin:{" "}
+              {placementPin
+                ? `${placementPin.lat.toFixed(4)}, ${placementPin.lng.toFixed(
+                    4
+                  )}`
+                : "None"}
+            </div>
           </div>
         </div>
       </div>
