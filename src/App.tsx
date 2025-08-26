@@ -3,6 +3,7 @@ import { ToiletMap } from "./components/ToiletMap";
 import { Header } from "./components/Header";
 import { AddToiletMode } from "./components/AddToiletMode";
 import { AddToiletForm } from "./components/AddToiletForm";
+import { EditToiletForm } from "./components/EditToiletForm";
 import { Toilet, ToiletFormData } from "./types/toilet";
 import { githubService } from "./services/githubService";
 import "./index.css";
@@ -17,6 +18,7 @@ function App() {
     lat: number;
     lng: number;
   } | null>(null);
+  const [editingToilet, setEditingToilet] = useState<Toilet | null>(null);
   // Track user votes for each toilet: 'like', 'dislike', or undefined
   const [userVotes, setUserVotes] = useState<
     Record<string, "like" | "dislike">
@@ -65,6 +67,14 @@ function App() {
     setIsAddingToilet(false);
     setShowAddToiletForm(false);
     setPlacementCoordinates(null);
+  };
+
+  const handleEditToilet = (toilet: Toilet) => {
+    setEditingToilet(toilet);
+  };
+
+  const handleCancelEditToilet = () => {
+    setEditingToilet(null);
   };
 
   const handleToiletPlaced = (coordinates: { lat: number; lng: number }) => {
@@ -123,6 +133,55 @@ function App() {
     } catch (error) {
       console.error("Error adding toilet:", error);
       // TODO: Show error message to user
+    }
+  };
+
+  const handleEditToiletFormSubmit = async (formData: ToiletFormData) => {
+    if (!editingToilet) return;
+
+    try {
+      const imageData = formData.imageData || undefined;
+
+      // Calculate which images were removed (this is a simplified approach)
+      // In a real app, you'd track which specific images were removed
+      const removedImages: number[] = [];
+
+      const result = await githubService.updateToiletDetails({
+        toiletId: editingToilet.id,
+        name: formData.name,
+        address: formData.address,
+        description: formData.description,
+        isFree: formData.isFree,
+        imageData,
+        removedImages,
+      });
+
+      if (result.success && result.toilet) {
+        // Update the toilet in local state
+        setToilets((prev) =>
+          prev.map((toilet) =>
+            toilet.id === editingToilet.id
+              ? {
+                  ...toilet,
+                  name: result.toilet!.name,
+                  address: result.toilet!.address,
+                  description: result.toilet!.description,
+                  isFree: result.toilet!.isFree,
+                  images: result.toilet!.images,
+                  updatedAt: new Date().toISOString(),
+                }
+              : toilet
+          )
+        );
+
+        // Close edit form
+        setEditingToilet(null);
+        console.log("Toilet updated successfully:", result.toilet);
+      } else {
+        console.error("Failed to update toilet:", result.error);
+      }
+    } catch (error) {
+      console.error("Error updating toilet:", error);
     }
   };
 
@@ -282,12 +341,37 @@ function App() {
             onToiletSelect={handleToiletSelect}
             onLike={handleLike}
             onDislike={handleDislike}
+            onEdit={handleEditToilet}
           />
         </div>
         <AddToiletForm
           coordinates={placementCoordinates}
           onCancel={handleCancelAddToilet}
           onSubmit={handleToiletFormSubmit}
+        />
+      </div>
+    );
+  }
+
+  // Show edit toilet form
+  if (editingToilet) {
+    return (
+      <div className="h-screen flex flex-col">
+        <Header onAddToilet={handleAddToilet} />
+        <div className="flex-1 relative">
+          <ToiletMap
+            toilets={toilets}
+            userVotes={userVotes}
+            onToiletSelect={handleToiletSelect}
+            onLike={handleLike}
+            onDislike={handleDislike}
+            onEdit={handleEditToilet}
+          />
+        </div>
+        <EditToiletForm
+          toilet={editingToilet}
+          onCancel={handleCancelEditToilet}
+          onSubmit={handleEditToiletFormSubmit}
         />
       </div>
     );
@@ -305,6 +389,7 @@ function App() {
           onToiletSelect={handleToiletSelect}
           onLike={handleLike}
           onDislike={handleDislike}
+          onEdit={handleEditToilet}
         />
       </div>
     </div>

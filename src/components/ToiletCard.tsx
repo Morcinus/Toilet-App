@@ -18,6 +18,7 @@ import {
   Image as ImageIcon,
   ChevronLeft,
   ChevronRight,
+  Edit,
 } from "lucide-react";
 
 interface ToiletCardProps {
@@ -26,6 +27,7 @@ interface ToiletCardProps {
   onClose: () => void;
   onLike?: (toiletId: string) => void;
   onDislike?: (toiletId: string) => void;
+  onEdit?: (toilet: Toilet) => void;
 }
 
 export const ToiletCard: React.FC<ToiletCardProps> = ({
@@ -34,6 +36,7 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
   onClose,
   onLike,
   onDislike,
+  onEdit,
 }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(
     null
@@ -97,14 +100,27 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
             <CardTitle className="text-lg leading-tight">
               {toilet.name}
             </CardTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onClose}
-              className="h-8 w-8 -mt-1 -mr-1"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+            <div className="flex items-center gap-1">
+              {onEdit && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => onEdit(toilet)}
+                  className="h-8 w-8 -mt-1 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                  title="Edit toilet"
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onClose}
+                className="h-8 w-8 -mt-1 -mr-1"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4" />

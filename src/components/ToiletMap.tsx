@@ -11,6 +11,7 @@ interface ToiletMapProps {
   onToiletSelect?: (toilet: Toilet) => void;
   onLike?: (toiletId: string) => void;
   onDislike?: (toiletId: string) => void;
+  onEdit?: (toilet: Toilet) => void;
 }
 
 // Custom marker icon
@@ -42,6 +43,7 @@ export const ToiletMap: React.FC<ToiletMapProps> = ({
   onToiletSelect,
   onLike,
   onDislike,
+  onEdit,
 }) => {
   const [selectedToilet, setSelectedToilet] = useState<Toilet | null>(null);
   const [showToiletCard, setShowToiletCard] = useState(false);
@@ -138,6 +140,7 @@ export const ToiletMap: React.FC<ToiletMapProps> = ({
             onClose={handleCloseCard}
             onLike={onLike}
             onDislike={onDislike}
+            onEdit={onEdit}
           />
         </div>
       )}

@@ -28,6 +28,23 @@ export interface AddToiletResponse {
   error?: string;
 }
 
+export interface UpdateToiletDetailsResponse {
+  success: boolean;
+  message: string;
+  toilet?: {
+    id: string;
+    name: string;
+    address: string;
+    latitude: number;
+    longitude: number;
+    description: string;
+    isFree: boolean;
+    images: string[];
+    newImageUrl?: string;
+  };
+  error?: string;
+}
+
 class GitHubService {
   private config: GitHubConfig | null = null;
 
@@ -98,6 +115,45 @@ class GitHubService {
       return data;
     } catch (error) {
       console.error("Error adding toilet:", error);
+      return {
+        success: false,
+        message: "Error occurred",
+        error:
+          error instanceof Error ? error.message : "Unknown error occurred",
+      };
+    }
+  }
+
+  async updateToiletDetails(toiletData: {
+    toiletId: string;
+    name: string;
+    address: string;
+    description: string;
+    isFree: boolean;
+    imageData?: string;
+    removedImages?: number[];
+  }): Promise<UpdateToiletDetailsResponse> {
+    try {
+      const response = await fetch(
+        "/.netlify/functions/update-toilet-details",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(toiletData),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to update toilet details");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("Error updating toilet details:", error);
       return {
         success: false,
         message: "Error occurred",
