@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { ToiletMap } from "./components/ToiletMap";
 import { Header } from "./components/Header";
-import { StatusIndicator } from "./components/StatusIndicator";
 import { Toilet } from "./types/toilet";
 import { githubService } from "./services/githubService";
 import "./index.css";
@@ -190,24 +189,11 @@ function App() {
     <div className="h-screen flex flex-col">
       <Header onAddToilet={handleAddToilet} />
 
-      {/* GitHub Configuration Button */}
+      {/* Persistence Banner */}
       <div className="bg-blue-50 border-b border-blue-200 px-4 py-2">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <StatusIndicator
-              status={isGitHubConfigured ? "configured" : "not-configured"}
-              lastUpdate={
-                isGitHubConfigured ? new Date().toISOString() : undefined
-              }
-            />
-            <span className="text-sm text-blue-800">
-              {isGitHubConfigured
-                ? "Changes will be committed to repository"
-                : "Configure GitHub to persist your changes"}
-            </span>
-          </div>
-          <span className="text-sm text-blue-600">
-            Server-managed GitHub config
+          <span className="text-sm text-blue-800">
+            Changes are persisted to the repository (server-managed config)
           </span>
         </div>
       </div>
