@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { ToiletMap } from "./components/ToiletMap";
 import { Header } from "./components/Header";
-import { Toilet } from "./types/toilet";
+import { AddToiletMode } from "./components/AddToiletMode";
+import { AddToiletForm } from "./components/AddToiletForm";
+import { Toilet, ToiletFormData } from "./types/toilet";
 import { githubService } from "./services/githubService";
 import "./index.css";
 
@@ -9,6 +11,12 @@ function App() {
   const [toilets, setToilets] = useState<Toilet[]>([]);
   // GitHub config UI no longer needed when server has env vars
   const [isGitHubConfigured, setIsGitHubConfigured] = useState(true);
+  const [isAddingToilet, setIsAddingToilet] = useState(false);
+  const [showAddToiletForm, setShowAddToiletForm] = useState(false);
+  const [placementCoordinates, setPlacementCoordinates] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
   // Track user votes for each toilet: 'like', 'dislike', or undefined
   const [userVotes, setUserVotes] = useState<
     Record<string, "like" | "dislike">
@@ -50,8 +58,52 @@ function App() {
   };
 
   const handleAddToilet = () => {
-    // TODO: Implement add toilet functionality (UC-4)
-    console.log("Add toilet clicked");
+    setIsAddingToilet(true);
+  };
+
+  const handleCancelAddToilet = () => {
+    setIsAddingToilet(false);
+    setShowAddToiletForm(false);
+    setPlacementCoordinates(null);
+  };
+
+  const handleToiletPlaced = (coordinates: { lat: number; lng: number }) => {
+    setPlacementCoordinates(coordinates);
+    setShowAddToiletForm(true);
+    setIsAddingToilet(false);
+  };
+
+  const handleToiletFormSubmit = async (formData: ToiletFormData) => {
+    // Generate a new ID (simple increment for now)
+    const newId = String(toilets.length + 1);
+
+    // Create the new toilet object
+    const newToilet: Toilet = {
+      id: newId,
+      name: formData.name,
+      address: formData.address,
+      latitude: formData.latitude,
+      longitude: formData.longitude,
+      description: formData.description,
+      isFree: formData.isFree,
+      rating: 0,
+      totalRatings: 0,
+      likes: 0,
+      dislikes: 0,
+      images: [], // TODO: Handle image upload
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    // Add to local state
+    setToilets((prev) => [...prev, newToilet]);
+
+    // Reset form state
+    setShowAddToiletForm(false);
+    setPlacementCoordinates(null);
+
+    // TODO: Persist to GitHub via Netlify function
+    console.log("New toilet added:", newToilet);
   };
 
   // GitHub config UI disabled when using server env vars
@@ -185,6 +237,43 @@ function App() {
 
   // Config screen disabled when using server env vars
 
+  // Show add toilet mode
+  if (isAddingToilet) {
+    return (
+      <div className="h-screen flex flex-col">
+        <Header onAddToilet={handleAddToilet} />
+        <AddToiletMode
+          onCancel={handleCancelAddToilet}
+          onToiletPlaced={handleToiletPlaced}
+        />
+      </div>
+    );
+  }
+
+  // Show add toilet form
+  if (showAddToiletForm && placementCoordinates) {
+    return (
+      <div className="h-screen flex flex-col">
+        <Header onAddToilet={handleAddToilet} />
+        <div className="flex-1 relative">
+          <ToiletMap
+            toilets={toilets}
+            userVotes={userVotes}
+            onToiletSelect={handleToiletSelect}
+            onLike={handleLike}
+            onDislike={handleDislike}
+          />
+        </div>
+        <AddToiletForm
+          coordinates={placementCoordinates}
+          onCancel={handleCancelAddToilet}
+          onSubmit={handleToiletFormSubmit}
+        />
+      </div>
+    );
+  }
+
+  // Show main map
   return (
     <div className="h-screen flex flex-col">
       <Header onAddToilet={handleAddToilet} />
