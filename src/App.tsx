@@ -31,14 +31,23 @@ function App() {
           .map((content) => parseToiletFromMarkdown(content))
           .filter((t): t is Toilet => t !== null);
 
+        console.log("Loaded toilets from markdown:", parsedToilets);
         setToilets(parsedToilets);
       } catch (error) {
         console.error("Failed to load toilets from markdown:", error);
       }
     };
 
-    loadToiletsFromMarkdown();
-  }, []);
+    // Only load toilets if we don't have any yet
+    if (toilets.length === 0) {
+      loadToiletsFromMarkdown();
+    }
+  }, [toilets.length]);
+
+  // Debug: Log whenever toilets state changes
+  useEffect(() => {
+    console.log("Toilets state changed:", toilets);
+  }, [toilets]);
 
   const handleToiletSelect = (toilet: Toilet) => {
     console.log("Selected toilet:", toilet);
@@ -60,26 +69,33 @@ function App() {
 
   // UC-3 Like/Dislike handlers with GitHub persistence
   const handleLike = async (toiletId: string) => {
+    console.log("Handling like for toilet:", toiletId);
+
     // Update local state immediately for responsive UI
-    setToilets((prevToilets) =>
-      prevToilets.map((toilet) => {
+    setToilets((prevToilets) => {
+      console.log("Previous toilets state:", prevToilets);
+      const updatedToilets = prevToilets.map((toilet) => {
         if (toilet.id === toiletId) {
           const newLikes = toilet.likes + 1;
           const newTotalRatings = toilet.totalRatings + 1;
           const newRating =
             (newLikes * 5 + toilet.dislikes * 1) / newTotalRatings;
 
-          return {
+          const updatedToilet = {
             ...toilet,
             likes: newLikes,
             totalRatings: newTotalRatings,
             rating: newRating,
             updatedAt: new Date().toISOString(),
           };
+          console.log("Updated toilet:", updatedToilet);
+          return updatedToilet;
         }
         return toilet;
-      })
-    );
+      });
+      console.log("New toilets state:", updatedToilets);
+      return updatedToilets;
+    });
 
     // If GitHub is configured, persist the change
     if (isGitHubConfigured) {
@@ -98,26 +114,33 @@ function App() {
   };
 
   const handleDislike = async (toiletId: string) => {
+    console.log("Handling dislike for toilet:", toiletId);
+
     // Update local state immediately for responsive UI
-    setToilets((prevToilets) =>
-      prevToilets.map((toilet) => {
+    setToilets((prevToilets) => {
+      console.log("Previous toilets state:", prevToilets);
+      const updatedToilets = prevToilets.map((toilet) => {
         if (toilet.id === toiletId) {
           const newDislikes = toilet.dislikes + 1;
           const newTotalRatings = toilet.totalRatings + 1;
           const newRating =
             (toilet.likes * 5 + newDislikes * 1) / newTotalRatings;
 
-          return {
+          const updatedToilet = {
             ...toilet,
             dislikes: newDislikes,
             totalRatings: newTotalRatings,
             rating: newRating,
             updatedAt: new Date().toISOString(),
           };
+          console.log("Updated toilet:", updatedToilet);
+          return updatedToilet;
         }
         return toilet;
-      })
-    );
+      });
+      console.log("New toilets state:", updatedToilets);
+      return updatedToilets;
+    });
 
     // If GitHub is configured, persist the change
     if (isGitHubConfigured) {
