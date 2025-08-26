@@ -7,6 +7,7 @@ import { Star, Euro } from "lucide-react";
 
 interface ToiletMapProps {
   toilets: Toilet[];
+  userVotes: Record<string, "like" | "dislike">;
   onToiletSelect?: (toilet: Toilet) => void;
   onLike?: (toiletId: string) => void;
   onDislike?: (toiletId: string) => void;
@@ -37,6 +38,7 @@ const getToiletIcon = (toilet: Toilet) => {
 
 export const ToiletMap: React.FC<ToiletMapProps> = ({
   toilets,
+  userVotes,
   onToiletSelect,
   onLike,
   onDislike,
@@ -132,6 +134,7 @@ export const ToiletMap: React.FC<ToiletMapProps> = ({
         <div className="absolute top-4 left-4 md:left-4 left-1/2 transform -translate-x-1/2 md:transform-none z-10 max-w-sm">
           <ToiletCard
             toilet={selectedToilet}
+            userVote={userVotes[selectedToilet.id]}
             onClose={handleCloseCard}
             onLike={onLike}
             onDislike={onDislike}

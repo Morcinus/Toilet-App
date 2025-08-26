@@ -22,6 +22,7 @@ import {
 
 interface ToiletCardProps {
   toilet: Toilet;
+  userVote?: "like" | "dislike";
   onClose: () => void;
   onLike?: (toiletId: string) => void;
   onDislike?: (toiletId: string) => void;
@@ -29,6 +30,7 @@ interface ToiletCardProps {
 
 export const ToiletCard: React.FC<ToiletCardProps> = ({
   toilet,
+  userVote,
   onClose,
   onLike,
   onDislike,
@@ -38,11 +40,15 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
   );
 
   const handleLike = () => {
-    onLike?.(toilet.id);
+    if (userVote !== "like") {
+      onLike?.(toilet.id);
+    }
   };
 
   const handleDislike = () => {
-    onDislike?.(toilet.id);
+    if (userVote !== "dislike") {
+      onDislike?.(toilet.id);
+    }
   };
 
   const openImagePreview = (index: number) => {
@@ -176,7 +182,12 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
             variant="outline"
             size="sm"
             onClick={handleLike}
-            className="flex-1 hover:bg-green-50 hover:border-green-300 hover:text-green-700"
+            disabled={userVote === "like"}
+            className={`flex-1 ${
+              userVote === "like"
+                ? "bg-green-50 border-green-300 text-green-700 cursor-not-allowed"
+                : "hover:bg-green-50 hover:border-green-300 hover:text-green-700"
+            }`}
           >
             <ThumbsUp className="h-4 w-4 mr-1" />
             Like ({toilet.likes})
@@ -185,7 +196,12 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
             variant="outline"
             size="sm"
             onClick={handleDislike}
-            className="flex-1 hover:bg-red-50 hover:border-red-300 hover:text-red-700"
+            disabled={userVote === "dislike"}
+            className={`flex-1 ${
+              userVote === "dislike"
+                ? "bg-red-50 border-red-300 text-red-700 cursor-not-allowed"
+                : "hover:bg-red-50 hover:border-red-300 hover:text-red-700"
+            }`}
           >
             <ThumbsDown className="h-4 w-4 mr-1" />
             Dislike ({toilet.dislikes})

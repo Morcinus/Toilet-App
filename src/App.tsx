@@ -11,6 +11,10 @@ function App() {
   const [toilets, setToilets] = useState<Toilet[]>([]);
   const [showGitHubConfig, setShowGitHubConfig] = useState(false);
   const [isGitHubConfigured, setIsGitHubConfigured] = useState(false);
+  // Track user votes for each toilet: 'like', 'dislike', or undefined
+  const [userVotes, setUserVotes] = useState<
+    Record<string, "like" | "dislike">
+  >({});
 
   useEffect(() => {
     // Check if GitHub is configured
@@ -44,11 +48,6 @@ function App() {
     }
   }, [toilets.length]);
 
-  // Debug: Log whenever toilets state changes
-  useEffect(() => {
-    console.log("Toilets state changed:", toilets);
-  }, [toilets]);
-
   const handleToiletSelect = (toilet: Toilet) => {
     console.log("Selected toilet:", toilet);
   };
@@ -69,31 +68,49 @@ function App() {
 
   // UC-3 Like/Dislike handlers with GitHub persistence
   const handleLike = async (toiletId: string) => {
-    console.log("Handling like for toilet:", toiletId);
+    // Check if user already voted
+    const currentVote = userVotes[toiletId];
+    if (currentVote === "like") {
+      return; // Already liked, do nothing
+    }
+
+    // Update user votes
+    setUserVotes((prev) => ({ ...prev, [toiletId]: "like" }));
 
     // Update local state immediately for responsive UI
     setToilets((prevToilets) => {
-      console.log("Previous toilets state:", prevToilets);
       const updatedToilets = prevToilets.map((toilet) => {
         if (toilet.id === toiletId) {
-          const newLikes = toilet.likes + 1;
-          const newTotalRatings = toilet.totalRatings + 1;
+          let newLikes = toilet.likes;
+          let newDislikes = toilet.dislikes;
+          let newTotalRatings = toilet.totalRatings;
+
+          if (currentVote === "dislike") {
+            // User is changing from dislike to like
+            newDislikes = Math.max(0, toilet.dislikes - 1);
+            newLikes = toilet.likes + 1;
+            newTotalRatings = toilet.totalRatings; // Total stays the same
+          } else {
+            // User is voting for the first time
+            newLikes = toilet.likes + 1;
+            newTotalRatings = toilet.totalRatings + 1;
+          }
+
           const newRating =
-            (newLikes * 5 + toilet.dislikes * 1) / newTotalRatings;
+            (newLikes * 5 + newDislikes * 1) / (newLikes + newDislikes);
 
           const updatedToilet = {
             ...toilet,
             likes: newLikes,
+            dislikes: newDislikes,
             totalRatings: newTotalRatings,
             rating: newRating,
             updatedAt: new Date().toISOString(),
           };
-          console.log("Updated toilet:", updatedToilet);
           return updatedToilet;
         }
         return toilet;
       });
-      console.log("New toilets state:", updatedToilets);
       return updatedToilets;
     });
 
@@ -114,31 +131,49 @@ function App() {
   };
 
   const handleDislike = async (toiletId: string) => {
-    console.log("Handling dislike for toilet:", toiletId);
+    // Check if user already voted
+    const currentVote = userVotes[toiletId];
+    if (currentVote === "dislike") {
+      return; // Already disliked, do nothing
+    }
+
+    // Update user votes
+    setUserVotes((prev) => ({ ...prev, [toiletId]: "dislike" }));
 
     // Update local state immediately for responsive UI
     setToilets((prevToilets) => {
-      console.log("Previous toilets state:", prevToilets);
       const updatedToilets = prevToilets.map((toilet) => {
         if (toilet.id === toiletId) {
-          const newDislikes = toilet.dislikes + 1;
-          const newTotalRatings = toilet.totalRatings + 1;
+          let newLikes = toilet.likes;
+          let newDislikes = toilet.dislikes;
+          let newTotalRatings = toilet.totalRatings;
+
+          if (currentVote === "like") {
+            // User is changing from like to dislike
+            newLikes = Math.max(0, toilet.likes - 1);
+            newDislikes = toilet.dislikes + 1;
+            newTotalRatings = toilet.totalRatings; // Total stays the same
+          } else {
+            // User is voting for the first time
+            newDislikes = toilet.dislikes + 1;
+            newTotalRatings = toilet.totalRatings + 1;
+          }
+
           const newRating =
-            (toilet.likes * 5 + newDislikes * 1) / newTotalRatings;
+            (newLikes * 5 + newDislikes * 1) / (newLikes + newDislikes);
 
           const updatedToilet = {
             ...toilet,
+            likes: newLikes,
             dislikes: newDislikes,
             totalRatings: newTotalRatings,
             rating: newRating,
             updatedAt: new Date().toISOString(),
           };
-          console.log("Updated toilet:", updatedToilet);
           return updatedToilet;
         }
         return toilet;
       });
-      console.log("New toilets state:", updatedToilets);
       return updatedToilets;
     });
 
@@ -198,6 +233,7 @@ function App() {
       <div className="flex-1 relative">
         <ToiletMap
           toilets={toilets}
+          userVotes={userVotes}
           onToiletSelect={handleToiletSelect}
           onLike={handleLike}
           onDislike={handleDislike}
