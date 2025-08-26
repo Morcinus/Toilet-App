@@ -185,6 +185,20 @@ function App() {
     }
   };
 
+  const handleDeleteToilet = async (toiletId: string) => {
+    try {
+      const res = await githubService.deleteToilet(toiletId);
+      if (res.success) {
+        setToilets((prev) => prev.filter((t) => t.id !== toiletId));
+        setEditingToilet(null);
+      } else {
+        console.error("Failed to delete toilet:", res.error);
+      }
+    } catch (e) {
+      console.error("Delete toilet error:", e);
+    }
+  };
+
   // GitHub config UI disabled when using server env vars
 
   // UC-3 Like/Dislike handlers with GitHub persistence
@@ -372,6 +386,7 @@ function App() {
           toilet={editingToilet}
           onCancel={handleCancelEditToilet}
           onSubmit={handleEditToiletFormSubmit}
+          onDelete={handleDeleteToilet}
         />
       </div>
     );

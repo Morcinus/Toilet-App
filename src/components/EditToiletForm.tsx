@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MapPin, X, Upload, Save } from "lucide-react";
+import { MapPin, X, Upload, Save, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,12 +10,14 @@ interface EditToiletFormProps {
   toilet: Toilet;
   onCancel: () => void;
   onSubmit: (data: ToiletFormData) => void;
+  onDelete?: (toiletId: string) => void;
 }
 
 export const EditToiletForm: React.FC<EditToiletFormProps> = ({
   toilet,
   onCancel,
   onSubmit,
+  onDelete,
 }) => {
   const [formData, setFormData] = useState<ToiletFormData>({
     name: toilet.name,
@@ -77,6 +79,16 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
     setExistingImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const handleDelete = () => {
+    if (!onDelete) return;
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${toilet.name}"? This action cannot be undone.`
+    );
+    if (confirmed) {
+      onDelete(toilet.id);
+    }
+  };
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
@@ -86,14 +98,27 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
             <MapPin className="w-5 h-5 text-blue-600" />
             <h2 className="text-lg font-semibold">Edit Toilet</h2>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onCancel}
-            className="h-8 w-8 p-0"
-          >
-            <X className="w-4 h-4" />
-          </Button>
+          <div className="flex items-center gap-2">
+            {onDelete && (
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={handleDelete}
+                className="h-8 px-2"
+                title="Delete toilet"
+              >
+                <Trash2 className="w-4 h-4 mr-1" /> Delete
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onCancel}
+              className="h-8 w-8 p-0"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
 
         {/* Form */}

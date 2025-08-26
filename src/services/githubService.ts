@@ -45,6 +45,12 @@ export interface UpdateToiletDetailsResponse {
   error?: string;
 }
 
+export interface DeleteToiletResponse {
+  success: boolean;
+  message: string;
+  error?: string;
+}
+
 class GitHubService {
   private config: GitHubConfig | null = null;
 
@@ -159,6 +165,28 @@ class GitHubService {
         message: "Error occurred",
         error:
           error instanceof Error ? error.message : "Unknown error occurred",
+      };
+    }
+  }
+
+  async deleteToilet(toiletId: string): Promise<DeleteToiletResponse> {
+    try {
+      const response = await fetch("/.netlify/functions/delete-toilet", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ toiletId }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to delete toilet");
+      }
+      return data;
+    } catch (error) {
+      console.error("Error deleting toilet:", error);
+      return {
+        success: false,
+        message: "Error occurred",
+        error: error instanceof Error ? error.message : "Unknown error",
       };
     }
   }
