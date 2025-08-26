@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { ToiletMap } from "./components/ToiletMap";
 import { Header } from "./components/Header";
-import { GitHubConfig } from "./components/GitHubConfig";
 import { StatusIndicator } from "./components/StatusIndicator";
 import { Toilet } from "./types/toilet";
 import { githubService } from "./services/githubService";
@@ -9,17 +8,16 @@ import "./index.css";
 
 function App() {
   const [toilets, setToilets] = useState<Toilet[]>([]);
-  const [showGitHubConfig, setShowGitHubConfig] = useState(false);
-  const [isGitHubConfigured, setIsGitHubConfigured] = useState(false);
+  // GitHub config UI no longer needed when server has env vars
+  const [isGitHubConfigured, setIsGitHubConfigured] = useState(true);
   // Track user votes for each toilet: 'like', 'dislike', or undefined
   const [userVotes, setUserVotes] = useState<
     Record<string, "like" | "dislike">
   >({});
 
   useEffect(() => {
-    // Check if GitHub is configured
-    const config = githubService.getConfig();
-    setIsGitHubConfigured(!!config);
+    // Always consider backend configured when env vars are set (no client config)
+    setIsGitHubConfigured(true);
   }, []);
 
   useEffect(() => {
@@ -57,14 +55,7 @@ function App() {
     console.log("Add toilet clicked");
   };
 
-  const handleShowGitHubConfig = () => {
-    setShowGitHubConfig(true);
-  };
-
-  const handleGitHubConfigSaved = () => {
-    setShowGitHubConfig(false);
-    setIsGitHubConfigured(true);
-  };
+  // GitHub config UI disabled when using server env vars
 
   // UC-3 Like/Dislike handlers with GitHub persistence
   const handleLike = async (toiletId: string) => {
@@ -193,13 +184,7 @@ function App() {
     }
   };
 
-  if (showGitHubConfig) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <GitHubConfig onConfigSaved={handleGitHubConfigSaved} />
-      </div>
-    );
-  }
+  // Config screen disabled when using server env vars
 
   return (
     <div className="h-screen flex flex-col">
@@ -221,12 +206,9 @@ function App() {
                 : "Configure GitHub to persist your changes"}
             </span>
           </div>
-          <button
-            onClick={handleShowGitHubConfig}
-            className="text-sm text-blue-600 hover:text-blue-800 underline"
-          >
-            {isGitHubConfigured ? "Reconfigure" : "Configure GitHub"}
-          </button>
+          <span className="text-sm text-blue-600">
+            Server-managed GitHub config
+          </span>
         </div>
       </div>
 

@@ -28,13 +28,30 @@ exports.handler = async (event, context) => {
     }
 
     const body = JSON.parse(event.body);
-    const { toiletId, action, githubToken, repoOwner, repoName, branch } = body;
+    const { toiletId, action } = body;
 
-    if (!toiletId || !action || !githubToken || !repoOwner || !repoName) {
+    // Read configuration from environment variables
+    const githubToken = process.env.GITHUB_TOKEN;
+    const repoOwner = process.env.GITHUB_REPO_OWNER;
+    const repoName = process.env.GITHUB_REPO_NAME;
+    const branch = process.env.GITHUB_BRANCH || "main";
+
+    if (!toiletId || !action) {
       return {
         statusCode: 400,
         headers,
         body: JSON.stringify({ error: "Missing required parameters" }),
+      };
+    }
+
+    if (!githubToken || !repoOwner || !repoName) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({
+          error:
+            "Server misconfiguration: missing GitHub environment variables",
+        }),
       };
     }
 
@@ -50,7 +67,7 @@ exports.handler = async (event, context) => {
             Authorization: `token ${githubToken}`,
             Accept: "application/vnd.github.v3+json",
           },
-          params: { ref: branch || "main" },
+          params: { ref: branch },
         }
       );
 
@@ -70,7 +87,7 @@ exports.handler = async (event, context) => {
           message: `Update toilet ${toiletId}: ${action}`,
           content: Buffer.from(updatedContent).toString("base64"),
           sha: currentSha,
-          branch: branch || "main",
+          branch,
         },
         {
           headers: {

@@ -47,11 +47,7 @@ export const GitHubConfig: React.FC<GitHubConfigProps> = ({
     setValidationResult(null);
 
     try {
-      const isValid = await githubService.validateToken(
-        config.token,
-        config.repoOwner,
-        config.repoName
-      );
+      const isValid = await githubService.validateToken();
 
       if (isValid) {
         setValidationResult({

@@ -27,24 +27,14 @@ class GitHubService {
     toiletId: string,
     action: "like" | "dislike"
   ): Promise<UpdateResponse> {
-    if (!this.config) {
-      throw new Error("GitHub configuration not set");
-    }
-
     try {
       const response = await fetch("/.netlify/functions/update-toilet", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          toiletId,
-          action,
-          githubToken: this.config.token,
-          repoOwner: this.config.repoOwner,
-          repoName: this.config.repoName,
-          branch: this.config.branch || "main",
-        }),
+        // Backend reads repo/token/branch from environment; only send essentials
+        body: JSON.stringify({ toiletId, action }),
       });
 
       const data = await response.json();
@@ -66,26 +56,9 @@ class GitHubService {
   }
 
   // Helper method to validate GitHub token
-  async validateToken(
-    token: string,
-    repoOwner: string,
-    repoName: string
-  ): Promise<boolean> {
-    try {
-      const response = await fetch(
-        `https://api.github.com/repos/${repoOwner}/${repoName}`,
-        {
-          headers: {
-            Authorization: `token ${token}`,
-            Accept: "application/vnd.github.v3+json",
-          },
-        }
-      );
-      return response.ok;
-    } catch (error) {
-      console.error("Error validating GitHub token:", error);
-      return false;
-    }
+  // With server-side env usage, validation is not required on client anymore.
+  async validateToken(): Promise<boolean> {
+    return true;
   }
 }
 
