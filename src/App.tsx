@@ -189,15 +189,6 @@ function App() {
     <div className="h-screen flex flex-col">
       <Header onAddToilet={handleAddToilet} />
 
-      {/* Persistence Banner */}
-      <div className="bg-blue-50 border-b border-blue-200 px-4 py-2">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <span className="text-sm text-blue-800">
-            Changes are persisted to the repository (server-managed config)
-          </span>
-        </div>
-      </div>
-
       <div className="flex-1 relative">
         <ToiletMap
           toilets={toilets}
