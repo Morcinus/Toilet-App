@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
 import { Toilet } from "@/types/toilet";
@@ -43,6 +43,16 @@ export const ToiletMap: React.FC<ToiletMapProps> = ({
 }) => {
   const [selectedToilet, setSelectedToilet] = useState<Toilet | null>(null);
   const [showToiletCard, setShowToiletCard] = useState(false);
+
+  // Update selectedToilet when toilets state changes to keep it in sync
+  useEffect(() => {
+    if (selectedToilet && showToiletCard) {
+      const updatedToilet = toilets.find((t) => t.id === selectedToilet.id);
+      if (updatedToilet) {
+        setSelectedToilet(updatedToilet);
+      }
+    }
+  }, [toilets, selectedToilet?.id, showToiletCard]);
 
   // Prague center coordinates
   const pragueCenter = { lat: 50.0755, lng: 14.4378 };
