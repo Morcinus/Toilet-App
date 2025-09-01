@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { MapPin, X, Upload, Save, Trash2 } from "lucide-react";
+import {
+  MapPin,
+  X,
+  Upload,
+  Save,
+  Trash2,
+  Loader2,
+  RefreshCw,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "./ui/textarea";
 import { Toilet, ToiletFormData } from "@/types/toilet";
+import { geocodingService } from "@/services/geocodingService";
 
 interface EditToiletFormProps {
   toilet: Toilet;
@@ -31,6 +40,8 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
   const [existingImages, setExistingImages] = useState<string[]>(
     toilet.images || []
   );
+  const [isLoadingAddress, setIsLoadingAddress] = useState(false);
+  const [addressError, setAddressError] = useState<string | null>(null);
 
   // Update form data when toilet prop changes
   useEffect(() => {
@@ -50,6 +61,29 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
     value: string | number | boolean
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const refreshAddress = async () => {
+    setIsLoadingAddress(true);
+    setAddressError(null);
+
+    try {
+      const result = await geocodingService.reverseGeocode(
+        formData.latitude,
+        formData.longitude
+      );
+
+      if (result.success) {
+        setFormData((prev) => ({ ...prev, address: result.address }));
+      } else {
+        setAddressError(result.error || "Failed to fetch address");
+      }
+    } catch (error) {
+      setAddressError("Network error while fetching address");
+      console.error("Geocoding error:", error);
+    } finally {
+      setIsLoadingAddress(false);
+    }
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,14 +171,49 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
 
           {/* Address */}
           <div className="space-y-2">
-            <Label htmlFor="address">Address *</Label>
-            <Input
-              id="address"
-              value={formData.address}
-              onChange={(e) => handleInputChange("address", e.target.value)}
-              placeholder="e.g., Staroměstské náměstí, 110 00 Praha 1"
-              required
-            />
+            <div className="flex items-center justify-between">
+              <Label htmlFor="address">Address *</Label>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={refreshAddress}
+                disabled={isLoadingAddress}
+                className="h-7 px-2 text-xs"
+              >
+                {isLoadingAddress ? (
+                  <Loader2 className="h-3 w-3 animate-spin mr-1" />
+                ) : (
+                  <RefreshCw className="h-3 w-3 mr-1" />
+                )}
+                Refresh
+              </Button>
+            </div>
+            <div className="relative">
+              <Input
+                id="address"
+                value={formData.address}
+                onChange={(e) => handleInputChange("address", e.target.value)}
+                placeholder={
+                  isLoadingAddress
+                    ? "Loading address..."
+                    : "e.g., Staroměstské náměstí, 110 00 Praha 1"
+                }
+                required
+                disabled={isLoadingAddress}
+                className={addressError ? "border-red-300" : ""}
+              />
+              {isLoadingAddress && (
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                </div>
+              )}
+            </div>
+            {addressError && (
+              <p className="text-sm text-red-600">
+                {addressError}. Please enter the address manually.
+              </p>
+            )}
           </div>
 
           {/* Description */}

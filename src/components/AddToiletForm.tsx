@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { MapPin, X, Upload, Plus } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { MapPin, X, Upload, Plus, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "./ui/textarea";
 import { ToiletFormData } from "@/types/toilet";
+import { geocodingService } from "@/services/geocodingService";
 
 interface AddToiletFormProps {
   coordinates: { lat: number; lng: number };
@@ -27,6 +28,36 @@ export const AddToiletForm: React.FC<AddToiletFormProps> = ({
   });
   // const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isLoadingAddress, setIsLoadingAddress] = useState(false);
+  const [addressError, setAddressError] = useState<string | null>(null);
+
+  // Auto-fetch address when component mounts
+  useEffect(() => {
+    const fetchAddress = async () => {
+      setIsLoadingAddress(true);
+      setAddressError(null);
+
+      try {
+        const result = await geocodingService.reverseGeocode(
+          coordinates.lat,
+          coordinates.lng
+        );
+
+        if (result.success) {
+          setFormData((prev) => ({ ...prev, address: result.address }));
+        } else {
+          setAddressError(result.error || "Failed to fetch address");
+        }
+      } catch (error) {
+        setAddressError("Network error while fetching address");
+        console.error("Geocoding error:", error);
+      } finally {
+        setIsLoadingAddress(false);
+      }
+    };
+
+    fetchAddress();
+  }, [coordinates.lat, coordinates.lng]);
 
   const handleInputChange = (
     field: keyof ToiletFormData,
@@ -95,13 +126,36 @@ export const AddToiletForm: React.FC<AddToiletFormProps> = ({
           {/* Address */}
           <div className="space-y-2">
             <Label htmlFor="address">Address *</Label>
-            <Input
-              id="address"
-              value={formData.address}
-              onChange={(e) => handleInputChange("address", e.target.value)}
-              placeholder="e.g., Staroměstské náměstí, 110 00 Praha 1"
-              required
-            />
+            <div className="relative">
+              <Input
+                id="address"
+                value={formData.address}
+                onChange={(e) => handleInputChange("address", e.target.value)}
+                placeholder={
+                  isLoadingAddress
+                    ? "Loading address..."
+                    : "e.g., Staroměstské náměstí, 110 00 Praha 1"
+                }
+                required
+                disabled={isLoadingAddress}
+                className={addressError ? "border-red-300" : ""}
+              />
+              {isLoadingAddress && (
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                </div>
+              )}
+            </div>
+            {addressError && (
+              <p className="text-sm text-red-600">
+                {addressError}. Please enter the address manually.
+              </p>
+            )}
+            {!isLoadingAddress && !addressError && formData.address && (
+              <p className="text-sm text-green-600">
+                ✓ Address automatically detected from coordinates
+              </p>
+            )}
           </div>
 
           {/* Description */}
