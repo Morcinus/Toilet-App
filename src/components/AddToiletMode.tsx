@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MapPin, X, Check } from "lucide-react";
+import { X, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import { LatLng, divIcon } from "leaflet";

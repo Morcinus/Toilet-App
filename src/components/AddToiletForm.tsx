@@ -29,16 +29,12 @@ export const AddToiletForm: React.FC<AddToiletFormProps> = ({
   });
   // const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isLoadingAddress, setIsLoadingAddress] = useState(false);
-  const [addressError, setAddressError] = useState<string | null>(null);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Auto-fetch address when component mounts
   useEffect(() => {
     const fetchAddress = async () => {
-      setIsLoadingAddress(true);
-      setAddressError(null);
-
       try {
         const result = await geocodingService.reverseGeocode(
           coordinates.lat,
@@ -47,14 +43,9 @@ export const AddToiletForm: React.FC<AddToiletFormProps> = ({
 
         if (result.success) {
           setFormData((prev) => ({ ...prev, address: result.address }));
-        } else {
-          setAddressError(result.error || "Failed to fetch address");
         }
       } catch (error) {
-        setAddressError("Network error while fetching address");
         console.error("Geocoding error:", error);
-      } finally {
-        setIsLoadingAddress(false);
       }
     };
 

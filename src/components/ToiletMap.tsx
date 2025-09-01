@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { Icon, divIcon } from "leaflet";
+import { divIcon } from "leaflet";
 import { Toilet } from "@/types/toilet";
 import { ToiletCard } from "./ToiletCard";
 import { Star, Euro } from "lucide-react";
@@ -36,7 +36,7 @@ const createCustomIcon = (color: string) => {
   });
 };
 
-const getToiletIcon = (toilet: Toilet) => {
+const getToiletIcon = () => {
   // Use dark pink for all pins for better emoji visibility
   return createCustomIcon("#c2185b"); // Dark pink for all toilets
 };
@@ -88,7 +88,7 @@ export const ToiletMap: React.FC<ToiletMapProps> = ({
           <Marker
             key={toilet.id}
             position={[toilet.latitude, toilet.longitude]}
-            icon={getToiletIcon(toilet)}
+            icon={getToiletIcon()}
             eventHandlers={{
               click: () => handleMarkerClick(toilet),
             }}
