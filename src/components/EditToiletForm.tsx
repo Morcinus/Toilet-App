@@ -228,18 +228,6 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
             />
           </div>
 
-          {/* Coordinates Display */}
-          <div className="space-y-2">
-            <Label>Location Coordinates</Label>
-            <div className="grid grid-cols-2 gap-2 text-sm text-gray-600 bg-gray-50 p-2 rounded">
-              <div>Latitude: {formData.latitude.toFixed(6)}</div>
-              <div>Longitude: {formData.longitude.toFixed(6)}</div>
-            </div>
-            <p className="text-xs text-gray-500">
-              Note: Coordinates cannot be changed in edit mode
-            </p>
-          </div>
-
           {/* Free/Paid Toggle */}
           <div className="space-y-2">
             <Label>Cost</Label>

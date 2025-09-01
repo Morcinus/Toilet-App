@@ -165,15 +165,6 @@ export const AddToiletForm: React.FC<AddToiletFormProps> = ({
             />
           </div>
 
-          {/* Coordinates Display */}
-          <div className="space-y-2">
-            <Label>Location Coordinates</Label>
-            <div className="grid grid-cols-2 gap-2 text-sm text-gray-600 bg-gray-50 p-2 rounded">
-              <div>Latitude: {coordinates.lat.toFixed(6)}</div>
-              <div>Longitude: {coordinates.lng.toFixed(6)}</div>
-            </div>
-          </div>
-
           {/* Free/Paid Toggle */}
           <div className="space-y-2">
             <Label>Cost</Label>
