@@ -153,8 +153,8 @@ exports.handler = async (event, context) => {
           }
         );
 
-        // Get the download URL for the new image
-        newImageUrl = imageResponse.data.content.download_url;
+        // Construct clean GitHub raw URL (without authentication tokens)
+        newImageUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/data/images/${imageFilename}`;
         updatedImages.push(newImageUrl);
       } catch (imageError) {
         console.error("Failed to upload new image:", imageError);

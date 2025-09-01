@@ -154,8 +154,8 @@ This toilet is located at coordinates ${latitude}, ${longitude}.
           }
         );
 
-        // Get the download URL for the image
-        imageUrl = imageResponse.data.content.download_url;
+        // Construct clean GitHub raw URL (without authentication tokens)
+        imageUrl = `https://raw.githubusercontent.com/${repoOwner}/${repoName}/${branch}/data/images/${imageFilename}`;
 
         // Update the toilet file to include the image
         const updatedFrontmatter = frontmatter.replace(
