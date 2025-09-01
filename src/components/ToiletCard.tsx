@@ -15,7 +15,6 @@ import {
   X,
   ThumbsUp,
   ThumbsDown,
-  Image as ImageIcon,
   ChevronLeft,
   ChevronRight,
   Edit,
