@@ -198,7 +198,7 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
             }`}
           >
             <ThumbsUp className="h-4 w-4 mr-1" />
-            Líbí ({toilet.likes})
+            Líbí
           </Button>
           <Button
             variant="outline"
@@ -212,7 +212,7 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
             }`}
           >
             <ThumbsDown className="h-4 w-4 mr-1" />
-            Nelíbí ({toilet.dislikes})
+            Nelíbí
           </Button>
         </CardFooter>
       </Card>

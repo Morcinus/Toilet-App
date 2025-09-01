@@ -81,7 +81,7 @@ export const AddToiletForm: React.FC<AddToiletFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name.trim() && formData.address.trim() && !isSubmitting) {
+    if (formData.name.trim() && !isSubmitting) {
       setIsSubmitting(true);
       try {
         // Include image data if available
@@ -129,36 +129,6 @@ export const AddToiletForm: React.FC<AddToiletFormProps> = ({
               placeholder="např., Veřejná toaleta - Staroměstské náměstí"
               required
             />
-          </div>
-
-          {/* Address */}
-          <div className="space-y-2">
-            <Label htmlFor="address">Adresa *</Label>
-            <div className="relative">
-              <Input
-                id="address"
-                value={formData.address}
-                onChange={(e) => handleInputChange("address", e.target.value)}
-                placeholder={
-                  isLoadingAddress
-                    ? "Načítání adresy..."
-                    : "např., Staroměstské náměstí, 110 00 Praha 1"
-                }
-                required
-                disabled={isLoadingAddress}
-                className={addressError ? "border-red-300" : ""}
-              />
-              {isLoadingAddress && (
-                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                  <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
-                </div>
-              )}
-            </div>
-            {addressError && (
-              <p className="text-sm text-red-600">
-                {addressError}. Zadejte prosím adresu ručně.
-              </p>
-            )}
           </div>
 
           {/* Description */}
@@ -245,9 +215,7 @@ export const AddToiletForm: React.FC<AddToiletFormProps> = ({
           <Button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700"
-            disabled={
-              !formData.name.trim() || !formData.address.trim() || isSubmitting
-            }
+            disabled={!formData.name.trim() || isSubmitting}
           >
             {isSubmitting ? (
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
