@@ -23,6 +23,7 @@ export interface ToiletFormData {
   description: string;
   isFree: boolean;
   imageData?: string;
+  removedImages?: string[];
 }
 
 export interface MapBounds {

@@ -142,9 +142,8 @@ function App() {
     try {
       const imageData = formData.imageData || undefined;
 
-      // Calculate which images were removed (this is a simplified approach)
-      // In a real app, you'd track which specific images were removed
-      const removedImages: number[] = [];
+      // Get removed images from form data
+      const removedImages = formData.removedImages || [];
 
       const result = await githubService.updateToiletDetails({
         toiletId: editingToilet.id,

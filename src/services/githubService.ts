@@ -137,7 +137,7 @@ class GitHubService {
     description: string;
     isFree: boolean;
     imageData?: string;
-    removedImages?: number[];
+    removedImages?: string[];
   }): Promise<UpdateToiletDetailsResponse> {
     try {
       const response = await fetch(
