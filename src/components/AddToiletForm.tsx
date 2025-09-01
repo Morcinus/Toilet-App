@@ -151,11 +151,6 @@ export const AddToiletForm: React.FC<AddToiletFormProps> = ({
                 {addressError}. Please enter the address manually.
               </p>
             )}
-            {!isLoadingAddress && !addressError && formData.address && (
-              <p className="text-sm text-green-600">
-                ✓ Address automatically detected from coordinates
-              </p>
-            )}
           </div>
 
           {/* Description */}

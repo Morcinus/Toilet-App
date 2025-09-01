@@ -109,7 +109,7 @@ class GeocodingService {
   /**
    * Format the address from Nominatim response
    * @param data Nominatim response data
-   * @returns Formatted address string
+   * @returns Formatted address string in "ROAD HOUSE_NUMBER, POST_CODE CITY" format
    */
   private formatAddress(data: NominatimResponse): string {
     const addr = data.address;
@@ -117,43 +117,34 @@ class GeocodingService {
       return data.display_name;
     }
 
-    // Build address components in order of specificity
-    const components: string[] = [];
+    // Build address in "ROAD HOUSE_NUMBER, POST_CODE CITY" format
+    const addressParts: string[] = [];
 
-    // House number and road
+    // Road and house number
     if (addr.house_number && addr.road) {
-      components.push(`${addr.road} ${addr.house_number}`);
+      addressParts.push(`${addr.road} ${addr.house_number}`);
     } else if (addr.road) {
-      components.push(addr.road);
+      addressParts.push(addr.road);
     }
 
-    // Suburb/neighborhood
-    if (addr.suburb) {
-      components.push(addr.suburb);
-    }
-
-    // City
-    if (addr.city) {
-      components.push(addr.city);
-    }
-
-    // Postcode
+    // Postcode and city
+    const locationParts: string[] = [];
     if (addr.postcode) {
-      components.push(addr.postcode);
+      locationParts.push(addr.postcode);
+    }
+    if (addr.city) {
+      locationParts.push(addr.city);
     }
 
-    // State/region
-    if (addr.state) {
-      components.push(addr.state);
+    // If we have location parts, add them after a comma
+    if (locationParts.length > 0) {
+      addressParts.push(locationParts.join(" "));
     }
 
-    // Country
-    if (addr.country) {
-      components.push(addr.country);
-    }
-
-    // If we have components, join them; otherwise use display_name
-    return components.length > 0 ? components.join(", ") : data.display_name;
+    // If we have formatted parts, return them; otherwise use display_name
+    return addressParts.length > 0
+      ? addressParts.join(", ")
+      : data.display_name;
   }
 
   /**
