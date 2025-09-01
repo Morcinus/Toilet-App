@@ -76,7 +76,22 @@ exports.handler = async (event, context) => {
     const existingFiles = listResponse.data.filter((item) =>
       item.name.endsWith(".md")
     );
-    const newId = String(existingFiles.length + 1);
+
+    // Find the next available ID by checking existing IDs
+    const existingIds = existingFiles
+      .map((file) => parseInt(file.name.replace(".md", "")))
+      .filter((id) => !isNaN(id))
+      .sort((a, b) => a - b);
+
+    let newId = 1;
+    for (const id of existingIds) {
+      if (id === newId) {
+        newId++;
+      } else {
+        break;
+      }
+    }
+    newId = String(newId);
 
     // Create the markdown content with frontmatter
     const frontmatter = `---
@@ -208,13 +223,28 @@ This toilet is located at coordinates ${latitude}, ${longitude}.
   } catch (error) {
     console.error("Error adding toilet:", error);
 
+    // Provide more specific error information
+    let errorMessage = "Failed to add toilet";
+    let errorDetails = error.message;
+
+    if (error.response) {
+      // GitHub API error
+      errorDetails = `GitHub API error: ${error.response.status} - ${
+        error.response.data?.message || error.message
+      }`;
+      console.error("GitHub API response:", error.response.data);
+    } else if (error.request) {
+      // Network error
+      errorDetails = "Network error - could not reach GitHub API";
+    }
+
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({
         success: false,
-        error: "Failed to add toilet",
-        details: error.message,
+        error: errorMessage,
+        details: errorDetails,
       }),
     };
   }
