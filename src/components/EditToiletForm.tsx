@@ -42,6 +42,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
   );
   const [isLoadingAddress, setIsLoadingAddress] = useState(false);
   const [addressError, setAddressError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Update form data when toilet prop changes
   useEffect(() => {
@@ -97,15 +98,22 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name.trim() && formData.address.trim()) {
-      // Include image data if available
-      const formDataWithImage = {
-        ...formData,
-        imageData: imagePreview || undefined,
-      };
-      onSubmit(formDataWithImage);
+    if (formData.name.trim() && formData.address.trim() && !isSubmitting) {
+      setIsSubmitting(true);
+      try {
+        // Include image data if available
+        const formDataWithImage = {
+          ...formData,
+          imageData: imagePreview || undefined,
+        };
+        await onSubmit(formDataWithImage);
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -324,10 +332,16 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
           <Button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700"
-            disabled={!formData.name.trim() || !formData.address.trim()}
+            disabled={
+              !formData.name.trim() || !formData.address.trim() || isSubmitting
+            }
           >
-            <Save className="w-4 h-4 mr-2" />
-            Save Changes
+            {isSubmitting ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4 mr-2" />
+            )}
+            {isSubmitting ? "Saving Changes..." : "Save Changes"}
           </Button>
         </form>
       </div>
