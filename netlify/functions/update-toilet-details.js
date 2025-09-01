@@ -132,6 +132,16 @@ exports.handler = async (event, context) => {
         const base64Data = imageData.split(",")[1];
         const imageBuffer = Buffer.from(base64Data, "base64");
 
+        // Check image size (GitHub has a 100MB file limit, but we'll be more conservative)
+        const imageSizeMB = imageBuffer.length / (1024 * 1024);
+        if (imageSizeMB > 10) {
+          throw new Error(
+            `Image too large: ${imageSizeMB.toFixed(
+              2
+            )}MB. Please use images smaller than 10MB.`
+          );
+        }
+
         // Generate a unique filename
         const timestamp = Date.now();
         const imageFilename = `toilet-${toiletId}-edit-${timestamp}.jpg`;
@@ -150,6 +160,7 @@ exports.handler = async (event, context) => {
               Authorization: `token ${githubToken}`,
               Accept: "application/vnd.github.v3+json",
             },
+            timeout: 30000, // 30 second timeout for image upload
           }
         );
 
@@ -158,7 +169,22 @@ exports.handler = async (event, context) => {
         updatedImages.push(newImageUrl);
       } catch (imageError) {
         console.error("Failed to upload new image:", imageError);
-        // Continue without new image if upload fails
+
+        // Return specific error for image upload failures
+        if (imageError.message.includes("too large")) {
+          return {
+            statusCode: 413,
+            headers,
+            body: JSON.stringify({
+              success: false,
+              error: "Image too large",
+              details: imageError.message,
+            }),
+          };
+        }
+
+        // Continue without new image if upload fails for other reasons
+        console.log("Continuing without new image due to upload failure");
       }
     }
 

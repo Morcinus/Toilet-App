@@ -148,6 +148,16 @@ This toilet is located at coordinates ${latitude}, ${longitude}.
         const base64Data = imageData.split(",")[1];
         const imageBuffer = Buffer.from(base64Data, "base64");
 
+        // Check image size (GitHub has a 100MB file limit, but we'll be more conservative)
+        const imageSizeMB = imageBuffer.length / (1024 * 1024);
+        if (imageSizeMB > 10) {
+          throw new Error(
+            `Image too large: ${imageSizeMB.toFixed(
+              2
+            )}MB. Please use images smaller than 10MB.`
+          );
+        }
+
         // Generate a unique filename
         const timestamp = Date.now();
         const imageFilename = `toilet-${newId}-${timestamp}.jpg`;
@@ -166,6 +176,7 @@ This toilet is located at coordinates ${latitude}, ${longitude}.
               Authorization: `token ${githubToken}`,
               Accept: "application/vnd.github.v3+json",
             },
+            timeout: 30000, // 30 second timeout for image upload
           }
         );
 
@@ -198,7 +209,26 @@ This toilet is located at coordinates ${latitude}, ${longitude}.
         );
       } catch (imageError) {
         console.error("Failed to upload image:", imageError);
-        // Continue without image if upload fails
+
+        // Return specific error for image upload failures
+        if (imageError.message.includes("too large")) {
+          return {
+            statusCode: 413,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Headers": "Content-Type",
+              "Access-Control-Allow-Methods": "POST, OPTIONS",
+            },
+            body: JSON.stringify({
+              success: false,
+              error: "Image too large",
+              details: imageError.message,
+            }),
+          };
+        }
+
+        // Continue without image if upload fails for other reasons
+        console.log("Continuing without image due to upload failure");
       }
     }
 
