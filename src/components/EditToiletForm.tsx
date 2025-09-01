@@ -32,6 +32,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
   const [existingImages, setExistingImages] = useState<string[]>(
     toilet.images || []
   );
+  const [removedImageUrls, setRemovedImageUrls] = useState<string[]>([]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -46,6 +47,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
       isFree: toilet.isFree,
     });
     setExistingImages(toilet.images || []);
+    setRemovedImageUrls([]); // Reset removed images when toilet changes
   }, [toilet]);
 
   const handleInputChange = (
@@ -127,10 +129,11 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
     if (formData.name.trim() && !isSubmitting) {
       setIsSubmitting(true);
       try {
-        // Include image data if available
+        // Include image data and removed images if available
         const formDataWithImage = {
           ...formData,
           imageData: imagePreview || undefined,
+          removedImages: removedImageUrls,
         };
         await onSubmit(formDataWithImage);
       } catch (error) {
@@ -142,7 +145,9 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
   };
 
   const removeExistingImage = (index: number) => {
+    const imageToRemove = existingImages[index];
     setExistingImages((prev) => prev.filter((_, i) => i !== index));
+    setRemovedImageUrls((prev) => [...prev, imageToRemove]);
   };
 
   const handleDelete = () => {

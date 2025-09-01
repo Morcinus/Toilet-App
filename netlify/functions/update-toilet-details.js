@@ -117,10 +117,10 @@ exports.handler = async (event, context) => {
     // Process image changes
     let updatedImages = [...currentImages];
 
-    // Remove specified images
+    // Remove specified images by URL
     if (removedImages && Array.isArray(removedImages)) {
       updatedImages = updatedImages.filter(
-        (_, index) => !removedImages.includes(index)
+        (imageUrl) => !removedImages.includes(imageUrl)
       );
     }
 
