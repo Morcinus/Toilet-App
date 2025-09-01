@@ -130,7 +130,7 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
 
         <CardContent className="space-y-4">
           {/* Images */}
-          {toilet.images && toilet.images.length > 0 ? (
+          {toilet.images && toilet.images.length > 0 && (
             <div className="space-y-2">
               <div className="flex gap-2 overflow-x-auto pb-2">
                 {toilet.images.map((image, index) => (
@@ -146,13 +146,6 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
                     }}
                   />
                 ))}
-              </div>
-            </div>
-          ) : (
-            <div className="flex items-center justify-center h-32 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300">
-              <div className="text-center text-gray-500">
-                <ImageIcon className="w-8 h-8 mx-auto mb-1 text-gray-400" />
-                <p className="text-xs">No images available</p>
               </div>
             </div>
           )}
