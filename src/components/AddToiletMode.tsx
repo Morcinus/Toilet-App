@@ -108,15 +108,16 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
   return (
     <div className="absolute inset-0 bg-white z-50 flex flex-col">
       {/* Header */}
-      <div className="bg-blue-600 text-white p-4 flex-shrink-0">
+      <div className="bg-gradient-to-r from-pink-400 to-purple-500 text-white p-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <MapPin className="w-6 h-6" />
+            <div className="w-8 h-8 bg-white/20 rounded-2xl flex items-center justify-center">
+              <span className="text-white text-lg">🗺️</span>
+            </div>
             <div>
-              <h2 className="text-lg font-semibold">Přidat Novou Toaletu</h2>
-              <p className="text-blue-100 text-sm">
-                Klikněte na mapu pro umístění toalety, pak klikněte "Umístit
-                Toaletu"
+              <h2 className="text-lg font-semibold">Přidat Nový Záchod</h2>
+              <p className="text-pink-100 text-sm">
+                Klikni na mapu, kde chceš umístit svůj trůn! 👑
               </p>
             </div>
           </div>
@@ -124,7 +125,7 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
             variant="ghost"
             size="sm"
             onClick={onCancel}
-            className="text-white hover:bg-blue-700"
+            className="text-white hover:bg-white/20 rounded-xl"
           >
             <X className="w-4 h-4" />
           </Button>
@@ -180,16 +181,16 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
         )}
 
         {/* Overlay with instructions and button */}
-        <div className="absolute bottom-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-20 border-2 border-blue-200">
+        <div className="absolute bottom-4 left-4 right-4 bg-white rounded-2xl shadow-lg p-4 z-20 border-2 border-pink-200 card-soft">
           <div className="text-center">
             <p className="text-gray-600 mb-4">
-              Klikněte kamkoliv na mapu pro umístění špendlíku toalety
+              Klikni kamkoliv na mapu pro umístění špendlíku 🗺️
             </p>
 
             <Button
               onClick={handlePlaceToilet}
               disabled={!placementPin}
-              className="bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-2"
+              className="bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white font-medium px-6 py-2 rounded-xl hover-bounce"
               style={{
                 minHeight: "44px",
                 fontSize: "16px",
@@ -198,7 +199,7 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
               }}
             >
               <Check className="w-5 h-5 mr-2" />
-              Umístit Toaletu
+              Umístit Trůn
             </Button>
           </div>
         </div>

@@ -93,7 +93,7 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
 
   return (
     <>
-      <Card className="w-80 shadow-xl border-0">
+      <Card className="w-80 card-soft border-0 rounded-2xl">
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <CardTitle className="text-lg leading-tight">
@@ -105,7 +105,7 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
                   variant="ghost"
                   size="icon"
                   onClick={() => onEdit(toilet)}
-                  className="h-8 w-8 -mt-1 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                  className="h-8 w-8 -mt-1 text-pink-600 hover:text-pink-700 hover:bg-pink-50 rounded-xl"
                   title="Upravit toaletu"
                 >
                   <Edit className="h-4 w-4" />
@@ -172,12 +172,12 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
 
             {/* Features */}
             {toilet.isFree ? (
-              <div className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
+              <div className="flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 rounded-full text-xs font-medium">
                 <Euro className="h-3 w-3" />
                 <span>Zdarma</span>
               </div>
             ) : (
-              <div className="flex items-center gap-1 px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs">
+              <div className="flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-orange-100 to-amber-100 text-orange-700 rounded-full text-xs font-medium">
                 <Euro className="h-3 w-3" />
                 <span>Placené</span>
               </div>
@@ -191,10 +191,10 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
             size="sm"
             onClick={handleLike}
             disabled={userVote === "like"}
-            className={`flex-1 ${
+            className={`flex-1 rounded-xl hover-bounce ${
               userVote === "like"
-                ? "bg-green-50 border-green-300 text-green-700 cursor-not-allowed"
-                : "hover:bg-green-50 hover:border-green-300 hover:text-green-700"
+                ? "bg-gradient-to-r from-green-100 to-emerald-100 border-green-300 text-green-700 cursor-not-allowed"
+                : "hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50 hover:border-green-300 hover:text-green-700"
             }`}
           >
             <ThumbsUp className="h-4 w-4 mr-1" />
@@ -205,10 +205,10 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
             size="sm"
             onClick={handleDislike}
             disabled={userVote === "dislike"}
-            className={`flex-1 ${
+            className={`flex-1 rounded-xl hover-bounce ${
               userVote === "dislike"
-                ? "bg-red-50 border-red-300 text-red-700 cursor-not-allowed"
-                : "hover:bg-red-50 hover:border-red-300 hover:text-red-700"
+                ? "bg-gradient-to-r from-red-100 to-pink-100 border-red-300 text-red-700 cursor-not-allowed"
+                : "hover:bg-gradient-to-r hover:from-red-50 hover:to-pink-50 hover:border-red-300 hover:text-red-700"
             }`}
           >
             <ThumbsDown className="h-4 w-4 mr-1" />

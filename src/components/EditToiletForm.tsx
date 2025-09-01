@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  MapPin,
-  X,
-  Upload,
-  Save,
-  Trash2,
-  Loader2,
-  RefreshCw,
-} from "lucide-react";
+import { MapPin, X, Upload, Save, Trash2, RefreshCw } from "lucide-react";
+import { ToiletPaperSpinner } from "@/components/ui/toilet-paper-spinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -137,7 +130,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-blue-600" />
+            <MapPin className="w-5 h-5 text-pink-600" />
             <h2 className="text-lg font-semibold">Upravit Toaletu</h2>
           </div>
           <div className="flex items-center gap-2">
@@ -172,7 +165,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
               id="name"
               value={formData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
-              placeholder="např., Veřejná toaleta - Staroměstské náměstí"
+              placeholder="Jak bys chtěla pojmenovat tento trůn? 👑"
               required
             />
           </div>
@@ -184,7 +177,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
               id="description"
               value={formData.description}
               onChange={(e) => handleInputChange("description", e.target.value)}
-              placeholder="Popište umístění toalety, vybavení atd."
+              placeholder="Popiš, co je na tomto místě speciální... 🚽✨"
               rows={3}
             />
           </div>
@@ -273,7 +266,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
                   <div className="space-y-2">
                     <Upload className="w-8 h-8 text-gray-400 mx-auto" />
                     <p className="text-sm text-gray-600">
-                      Klikněte pro nahrání nového obrázku
+                      Klikni pro nahrání nové fotky 📸
                     </p>
                   </div>
                 )}
@@ -284,15 +277,15 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            className="w-full bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white rounded-xl hover-bounce"
             disabled={!formData.name.trim() || isSubmitting}
           >
             {isSubmitting ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <ToiletPaperSpinner size="sm" className="mr-2" />
             ) : (
               <Save className="w-4 h-4 mr-2" />
             )}
-            {isSubmitting ? "Ukládání Změn..." : "Uložit Změny"}
+            {isSubmitting ? "Ukládám změny..." : "Uložit Změny"}
           </Button>
         </form>
       </div>

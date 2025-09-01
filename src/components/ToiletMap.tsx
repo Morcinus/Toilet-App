@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { Icon } from "leaflet";
+import { Icon, divIcon } from "leaflet";
 import { Toilet } from "@/types/toilet";
 import { ToiletCard } from "./ToiletCard";
 import { Star, Euro } from "lucide-react";
@@ -14,27 +14,31 @@ interface ToiletMapProps {
   onEdit?: (toilet: Toilet) => void;
 }
 
-// Custom marker icon
-const createCustomIcon = (color: string) =>
-  new Icon({
-    iconUrl: `data:image/svg+xml;base64,${btoa(`
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="10" fill="${color}" stroke="white" stroke-width="2"/>
-      <path d="M8 8h8v8H8z" fill="white"/>
-      <path d="M10 10h4v4h-4z" fill="${color}"/>
-    </svg>
-  `)}`,
-    iconSize: [24, 24],
-    iconAnchor: [12, 12],
-    popupAnchor: [0, -12],
+// Custom marker icon with toilet emoji using divIcon
+const createCustomIcon = (color: string) => {
+  return divIcon({
+    className: "custom-div-icon",
+    html: `<div style="
+      background-color: ${color};
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 3px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    ">🚽</div>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+    popupAnchor: [0, -16],
   });
+};
 
 const getToiletIcon = (toilet: Toilet) => {
-  if (toilet.isFree) {
-    return createCustomIcon("#10b981"); // Green for free
-  } else {
-    return createCustomIcon("#f59e0b"); // Orange for paid
-  }
+  // Use dark pink for all pins for better emoji visibility
+  return createCustomIcon("#c2185b"); // Dark pink for all toilets
 };
 
 export const ToiletMap: React.FC<ToiletMapProps> = ({
@@ -117,16 +121,24 @@ export const ToiletMap: React.FC<ToiletMapProps> = ({
       </MapContainer>
 
       {/* Legend */}
-      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg border">
+      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-2xl p-3 shadow-lg border border-pink-200 card-soft">
         <h4 className="font-semibold text-sm mb-2">Legenda</h4>
         <div className="space-y-2 text-xs">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-            <span>Zdarma</span>
+            <div className="w-6 h-6 rounded-full bg-pink-600 flex items-center justify-center text-white text-xs">
+              🚽
+            </div>
+            <span>Záchody</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-            <span>Placené</span>
+          <div className="text-xs text-gray-600 mt-2">
+            <div className="flex items-center gap-1">
+              <Euro className="w-3 h-3" />
+              <span>Zdarma</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Euro className="w-3 h-3" />
+              <span>Placené</span>
+            </div>
           </div>
         </div>
       </div>

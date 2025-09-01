@@ -13,15 +13,15 @@ export const Header: React.FC<HeaderProps> = ({ onAddToilet }) => {
         <div className="flex items-center justify-between h-16">
           {/* Logo and Title */}
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <MapPin className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 bg-gradient-to-br from-pink-400 to-purple-500 rounded-2xl flex items-center justify-center hover-wiggle">
+              <span className="text-white text-lg">🧻</span>
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-900">
-                Mapa Toalet Praha
+                Míšy Mapa Záchodů
               </h1>
               <p className="text-sm text-gray-500">
-                Najděte čistá zařízení ve vašem okolí
+                Protože příroda volá a my odpovídáme! 🚽
               </p>
             </div>
           </div>
@@ -31,10 +31,10 @@ export const Header: React.FC<HeaderProps> = ({ onAddToilet }) => {
             <Button
               onClick={onAddToilet}
               size="sm"
-              className="bg-blue-600 hover:bg-blue-700"
+              className="bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white hover-bounce"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Přidat Toaletu
+              Umístit Záchod
             </Button>
           </div>
         </div>
