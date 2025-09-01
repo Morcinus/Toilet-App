@@ -145,7 +145,7 @@ export const ToiletMap: React.FC<ToiletMapProps> = ({
 
       {/* Toilet Card Overlay */}
       {showToiletCard && selectedToilet && (
-        <div className="absolute top-4 left-4 md:left-4 left-1/2 transform -translate-x-1/2 md:transform-none z-10 max-w-sm">
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 md:left-4 md:transform-none z-10 max-w-sm">
           <ToiletCard
             toilet={selectedToilet}
             userVote={userVotes[selectedToilet.id]}
