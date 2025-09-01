@@ -18,10 +18,10 @@ export const Header: React.FC<HeaderProps> = ({ onAddToilet }) => {
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-900">
-                Míšy Mapa Záchodů
+                Míšy Záchodník
               </h1>
               <p className="text-sm text-gray-500">
-                Protože příroda volá a my odpovídáme! 🚽
+                Mapa, která tě nikdy nenechá ve štychu!
               </p>
             </div>
           </div>
