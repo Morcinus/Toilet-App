@@ -106,7 +106,7 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
                   size="icon"
                   onClick={() => onEdit(toilet)}
                   className="h-8 w-8 -mt-1 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                  title="Edit toilet"
+                  title="Upravit toaletu"
                 >
                   <Edit className="h-4 w-4" />
                 </Button>
@@ -166,7 +166,7 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
                 </span>
               </div>
               <span className="text-sm text-muted-foreground">
-                ({toilet.totalRatings} ratings)
+                ({toilet.totalRatings} hodnocení)
               </span>
             </div>
 
@@ -174,12 +174,12 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
             {toilet.isFree ? (
               <div className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">
                 <Euro className="h-3 w-3" />
-                <span>Free</span>
+                <span>Zdarma</span>
               </div>
             ) : (
               <div className="flex items-center gap-1 px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs">
                 <Euro className="h-3 w-3" />
-                <span>Paid</span>
+                <span>Placené</span>
               </div>
             )}
           </div>
@@ -198,7 +198,7 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
             }`}
           >
             <ThumbsUp className="h-4 w-4 mr-1" />
-            Like ({toilet.likes})
+            Líbí ({toilet.likes})
           </Button>
           <Button
             variant="outline"
@@ -212,7 +212,7 @@ export const ToiletCard: React.FC<ToiletCardProps> = ({
             }`}
           >
             <ThumbsDown className="h-4 w-4 mr-1" />
-            Dislike ({toilet.dislikes})
+            Nelíbí ({toilet.dislikes})
           </Button>
         </CardFooter>
       </Card>

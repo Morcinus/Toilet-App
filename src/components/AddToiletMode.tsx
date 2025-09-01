@@ -113,9 +113,10 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
           <div className="flex items-center gap-3">
             <MapPin className="w-6 h-6" />
             <div>
-              <h2 className="text-lg font-semibold">Add New Toilet</h2>
+              <h2 className="text-lg font-semibold">Přidat Novou Toaletu</h2>
               <p className="text-blue-100 text-sm">
-                Click on the map to place the toilet, then click "Place Toilet"
+                Klikněte na mapu pro umístění toalety, pak klikněte "Umístit
+                Toaletu"
               </p>
             </div>
           </div>
@@ -170,9 +171,9 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
         {!mapLoaded && (
           <div className="absolute inset-0 bg-gray-100 flex items-center justify-center pointer-events-none z-10">
             <div className="text-center text-gray-500">
-              <p>Loading map...</p>
+              <p>Načítání mapy...</p>
               <p className="text-xs mt-2">
-                If map doesn't appear, check console for errors
+                Pokud se mapa nezobrazí, zkontrolujte konzoli pro chyby
               </p>
             </div>
           </div>
@@ -182,16 +183,16 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
         <div className="absolute bottom-4 left-4 right-4 bg-white rounded-lg shadow-lg p-4 z-20 border-2 border-blue-200">
           <div className="text-center">
             <p className="text-gray-600 mb-4">
-              Click anywhere on the map to place toilet pin
+              Klikněte kamkoliv na mapu pro umístění špendlíku toalety
             </p>
             {placementPin && (
               <div className="bg-green-100 border border-green-300 rounded-lg p-4 mb-4">
                 <p className="text-green-800 font-medium">
-                  Toilet will be placed at:
+                  Toaleta bude umístěna na:
                 </p>
                 <p className="text-green-700 text-sm">
-                  Lat: {placementPin.lat.toFixed(6)}, Lng:{" "}
-                  {placementPin.lng.toFixed(6)}
+                  Zeměpisná šířka: {placementPin.lat.toFixed(6)}, Zeměpisná
+                  délka: {placementPin.lng.toFixed(6)}
                 </p>
               </div>
             )}
@@ -207,17 +208,18 @@ export const AddToiletMode: React.FC<AddToiletModeProps> = ({
               }}
             >
               <Check className="w-5 h-5 mr-2" />
-              Place Toilet
+              Umístit Toaletu
             </Button>
 
             {/* Debug info */}
             <div className="text-xs text-gray-500 mt-2">
-              Button state: {placementPin ? "Enabled" : "Disabled"} | Pin:{" "}
+              Stav tlačítka: {placementPin ? "Povoleno" : "Zakázáno"} |
+              Špendlík:{" "}
               {placementPin
                 ? `${placementPin.lat.toFixed(4)}, ${placementPin.lng.toFixed(
                     4
                   )}`
-                : "None"}
+                : "Žádný"}
             </div>
           </div>
         </div>

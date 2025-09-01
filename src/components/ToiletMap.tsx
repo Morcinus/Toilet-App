@@ -118,15 +118,15 @@ export const ToiletMap: React.FC<ToiletMapProps> = ({
 
       {/* Legend */}
       <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg border">
-        <h4 className="font-semibold text-sm mb-2">Legend</h4>
+        <h4 className="font-semibold text-sm mb-2">Legenda</h4>
         <div className="space-y-2 text-xs">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-green-500"></div>
-            <span>Free</span>
+            <span>Zdarma</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-            <span>Paid</span>
+            <span>Placené</span>
           </div>
         </div>
       </div>

@@ -18,10 +18,10 @@ export const Header: React.FC<HeaderProps> = ({ onAddToilet }) => {
             </div>
             <div>
               <h1 className="text-xl font-bold text-gray-900">
-                Prague Toilet Map
+                Mapa Toalet Praha
               </h1>
               <p className="text-sm text-gray-500">
-                Find clean facilities near you
+                Najděte čistá zařízení ve vašem okolí
               </p>
             </div>
           </div>
@@ -34,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({ onAddToilet }) => {
               className="bg-blue-600 hover:bg-blue-700"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Toilet
+              Přidat Toaletu
             </Button>
           </div>
         </div>

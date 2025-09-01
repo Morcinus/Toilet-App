@@ -124,7 +124,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
   const handleDelete = () => {
     if (!onDelete) return;
     const confirmed = window.confirm(
-      `Are you sure you want to delete "${toilet.name}"? This action cannot be undone.`
+      `Jste si jisti, že chcete smazat "${toilet.name}"? Tuto akci nelze vrátit zpět.`
     );
     if (confirmed) {
       onDelete(toilet.id);
@@ -138,7 +138,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center gap-2">
             <MapPin className="w-5 h-5 text-blue-600" />
-            <h2 className="text-lg font-semibold">Edit Toilet</h2>
+            <h2 className="text-lg font-semibold">Upravit Toaletu</h2>
           </div>
           <div className="flex items-center gap-2">
             {onDelete && (
@@ -147,9 +147,9 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
                 variant="destructive"
                 onClick={handleDelete}
                 className="h-8 px-2"
-                title="Delete toilet"
+                title="Smazat toaletu"
               >
-                <Trash2 className="w-4 h-4 mr-1" /> Delete
+                <Trash2 className="w-4 h-4 mr-1" /> Smazat
               </Button>
             )}
             <Button
@@ -167,12 +167,12 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           {/* Name */}
           <div className="space-y-2">
-            <Label htmlFor="name">Toilet Name *</Label>
+            <Label htmlFor="name">Název Toalety *</Label>
             <Input
               id="name"
               value={formData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
-              placeholder="e.g., Public Toilet - Old Town Square"
+              placeholder="např., Veřejná toaleta - Staroměstské náměstí"
               required
             />
           </div>
@@ -180,7 +180,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
           {/* Address */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="address">Address *</Label>
+              <Label htmlFor="address">Adresa *</Label>
               <Button
                 type="button"
                 variant="outline"
@@ -194,7 +194,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
                 ) : (
                   <RefreshCw className="h-3 w-3 mr-1" />
                 )}
-                Refresh
+                Obnovit
               </Button>
             </div>
             <div className="relative">
@@ -204,8 +204,8 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
                 onChange={(e) => handleInputChange("address", e.target.value)}
                 placeholder={
                   isLoadingAddress
-                    ? "Loading address..."
-                    : "e.g., Staroměstské náměstí, 110 00 Praha 1"
+                    ? "Načítání adresy..."
+                    : "např., Staroměstské náměstí, 110 00 Praha 1"
                 }
                 required
                 disabled={isLoadingAddress}
@@ -219,26 +219,26 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
             </div>
             {addressError && (
               <p className="text-sm text-red-600">
-                {addressError}. Please enter the address manually.
+                {addressError}. Zadejte prosím adresu ručně.
               </p>
             )}
           </div>
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">Popis</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => handleInputChange("description", e.target.value)}
-              placeholder="Describe the toilet location, features, etc."
+              placeholder="Popište umístění toalety, vybavení atd."
               rows={3}
             />
           </div>
 
           {/* Free/Paid Toggle */}
           <div className="space-y-2">
-            <Label>Cost</Label>
+            <Label>Cena</Label>
             <div className="flex gap-2">
               <Button
                 type="button"
@@ -247,7 +247,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
                 onClick={() => handleInputChange("isFree", true)}
                 className="flex-1"
               >
-                Free
+                Zdarma
               </Button>
               <Button
                 type="button"
@@ -256,7 +256,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
                 onClick={() => handleInputChange("isFree", false)}
                 className="flex-1"
               >
-                Paid
+                Placené
               </Button>
             </div>
           </div>
@@ -264,13 +264,13 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
           {/* Existing Images */}
           {existingImages.length > 0 && (
             <div className="space-y-2">
-              <Label>Existing Images</Label>
+              <Label>Existující Obrázky</Label>
               <div className="grid grid-cols-3 gap-2">
                 {existingImages.map((image, index) => (
                   <div key={index} className="relative group">
                     <img
                       src={image}
-                      alt={`Existing image ${index + 1}`}
+                      alt={`Existující obrázek ${index + 1}`}
                       className="w-full h-24 object-cover rounded border border-gray-200"
                     />
                     <Button
@@ -290,7 +290,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
 
           {/* New Image Upload */}
           <div className="space-y-2">
-            <Label htmlFor="image">Add New Image (Optional)</Label>
+            <Label htmlFor="image">Přidat Nový Obrázek (Volitelné)</Label>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
               <input
                 type="file"
@@ -313,14 +313,14 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
                       size="sm"
                       onClick={() => setImagePreview(null)}
                     >
-                      Remove New Image
+                      Odebrat Nový Obrázek
                     </Button>
                   </div>
                 ) : (
                   <div className="space-y-2">
                     <Upload className="w-8 h-8 text-gray-400 mx-auto" />
                     <p className="text-sm text-gray-600">
-                      Click to upload a new image
+                      Klikněte pro nahrání nového obrázku
                     </p>
                   </div>
                 )}
@@ -341,7 +341,7 @@ export const EditToiletForm: React.FC<EditToiletFormProps> = ({
             ) : (
               <Save className="w-4 h-4 mr-2" />
             )}
-            {isSubmitting ? "Saving Changes..." : "Save Changes"}
+            {isSubmitting ? "Ukládání Změn..." : "Uložit Změny"}
           </Button>
         </form>
       </div>
